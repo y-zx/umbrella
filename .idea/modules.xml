@@ -2,8 +2,8 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/RecyclerAdapterTest.iml" filepath="$PROJECT_DIR$/RecyclerAdapterTest.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
+      <module fileurl="file://$PROJECT_DIR$/githubProject.iml" filepath="$PROJECT_DIR$/githubProject.iml" />
     </modules>
   </component>
 </project>
