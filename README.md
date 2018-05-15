@@ -4,78 +4,90 @@ RecyclerView 的 单重，多重通用适配器
 
 use sample:
 
-    int ITEM1 = 1;
-    int ITEM2 = 2;
-    int ITEM3 = 3;
+          RecyclerDelegateAdapter adapter = new RecyclerDelegateAdapter(this);
+          recyclerView.setAdapter(adapter);
 
-        LinearLayoutManager manager = new LinearLayoutManager(this);
-        recyclerView.setLayoutManager(manager);
-        //通用适配器
-        RecyclerCommonAdapter adapter = new RecyclerCommonAdapter(this);
-        recyclerView.setAdapter(adapter);
+           //以下是 设置自己的item
 
-        //布局类型1
-        //RecyclerCommonAdapter.CommonItem<MyBean> 一般用于网络数据item展示, convert 中设置数据，点击事件等
-        RecyclerCommonAdapter.CommonItem<String> item = new RecyclerCommonAdapter.CommonItem<String>(ITEM1, R.layout.cell_main_recycler_item) {
-            @Override
-            protected void convert(RecyclerCommonAdapter.ViewHolder holder, int position, int positionAtTotal, String s) {
-                holder.setText(R.id.tv_main_recycler_item, s);
-                //  getScopeStartPosition();----获取 该布局类型 起始position
-                //  getScopeEndPosition()----获取 该布局类型 结束position
-                //  getAdapter() 获取adapter
-                //  getCount() 获取该类型布局 （注入的数据的总长度）
+          //item的个数 随数据源而定，布局为一种
+          CommonItem<String> commonItem = new CommonItem<String>(R.layout.cell_main_recycler_item2) {
+              @Override
+              protected void convert(CommonViewHolder holder, int position, int positionAtTotal, String s) {
+                  holder.setText(R.id.tv_main_recycler_item2, s);
+              }
+          };
+          commonItem.setData(Arrays.asList(titles));
 
+          //item 的个数 随数据源而定，布局为多种
+          CommonMultipleItem<Integer> commonMultipleItem = new CommonMultipleItem<>();
+          commonMultipleItem.registerMultileChildItem(commonMultipleItem.new MultipleChildItem(R.layout.cell_my_layout) {
+              @Override
+              protected boolean handleItem(Integer integer) {
+                  return integer < 7;
+              }
 
-            }
-        };
-        //布局类型2  只要第一个参数 值不同，就是不同的ViewTyp
-        RecyclerCommonAdapter.CommonItem<Integer> item2 = new RecyclerCommonAdapter.CommonItem<Integer>(ITEM2, R.layout.cell_main_recycler_item2) {
-            @Override
-            protected void convert(RecyclerCommonAdapter.ViewHolder holder, int position, int positionAtTotal, Integer i) {
-                holder.setText(R.id.tv_main_recycler_item2, "數據 = " + i);
-                //  getScopeStartPosition();----获取 该布局类型 起始position
-                //  getScopeEndPosition()----获取 该布局类型 结束position
-                //  getAdapter() 获取adapter
-                //  getCount() 获取该类型布局 （注入的数据的总长度）
+              @Override
+              protected void convert(CommonViewHolder holder, int position, int positionAtTotal, Integer integer) {
+                  holder.setText(R.id.btn, integer + "");
 
+              }
+          }).registerMultileChildItem(commonMultipleItem.new MultipleChildItem(R.layout.cell_my_layout2) {
+              @Override
+              protected boolean handleItem(Integer integer) {
+                  return integer >= 7;
+              }
 
-            }
-        };
+              @Override
+              protected void convert(CommonViewHolder holder, int position, int positionAtTotal, Integer integer) {
+                  holder.setText(R.id.btn2, integer + "");
+              }
+          });
+          commonMultipleItem.addData(Arrays.asList(ints));
 
-        //布局类型3
-        //RecyclerCommonAdapter.FixItem 一般用于固定长度布局，也可以用于网络数据布局 通过setCount改变该类型item个数
-        RecyclerCommonAdapter.FixItem item1 = new RecyclerCommonAdapter.FixItem(ITEM3, R.layout.cell_my_layout, 2) {
-            @Override
-            protected void convert(RecyclerCommonAdapter.ViewHolder holder, final int position, final int positionAtTotal) {
-                super.convert(holder, position, positionAtTotal);
-                holder.getView(R.id.btn).setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        Toast.makeText(context, "相对位置 " + position + " 绝对 " + positionAtTotal, Toast.LENGTH_SHORT).show();
-                    }
-                });
-            }
-        };
+          FooterItem footerItem = new FooterItem(R.layout.cell_my_footer) {
+              @Override
+              protected void convert(CommonViewHolder holder) {
+                  holder.itemView.setOnClickListener(new View.OnClickListener() {
+                      @Override
+                      public void onClick(View v) {
+                          adapter.setFooterStatusLoading();
+                      }
+                  });
+              }
 
+              @Override
+              public FooterStatusChangedListener setFooterStatusChangedListener() {
+                  return new FooterStatusChangedListener() {
+                      @Override
+                      public void loadComplete(CommonViewHolder holder) {
+                          holder.setText(R.id.tv_footer_text, "加载更多")
+                                  .setViewVisible(R.id.pb_footer_progress, View.GONE);
+                      }
 
-        //布局类型3.... 等等等，可自定义，几乎可 用以上两个 item 完成全部布局
+                      @Override
+                      public void loading(CommonViewHolder holder) {
+                          holder.setText(R.id.tv_footer_text, "正在加载")
+                                  .setViewVisible(R.id.pb_footer_progress, View.VISIBLE);
+                      }
 
+                      @Override
+                      public void loadError(CommonViewHolder holder) {
+                          holder.setText(R.id.tv_footer_text, "网络异常")
+                                  .setViewVisible(R.id.pb_footer_progress, View.GONE);
+                      }
 
-        //注册布局1，注册布局2, 支持布局类型的position插入,以及移除
-        adapter.registerItem(item).registerItem(item1, 0).registerItem(item2);
+                      @Override
+                      public void noMore(CommonViewHolder holder) {
+                          holder.setText(R.id.tv_footer_text, "没有更多")
+                                  .setViewVisible(R.id.pb_footer_progress, View.GONE);
+                      }
+                  };
+              }
+          };
 
-        // 布局1 注入 数据， 数据类型声明泛型 RecyclerCommonAdapter.CommonItem<String> ，可以是任何类型
-        item.addData(Arrays.asList(titles));
+          adapter.registerItem(new FixItem(R.layout.cell_main_recycler_item, 1)) //固定一个item
+                  .registerItem(commonItem)
+                  .registerItem(commonMultipleItem)
+                  .registerItem(footerItem);
 
-        //调用adapter 刷新界面   或者 adapter.notifyDataSetChanged(); 都行
-        //item.notifyDataSetChanged();
-
-        // 只刷新该类型全部的Item，其他类型不刷新
-        //item.notifyRangeSetChanged();
-
-        item2.addData(Arrays.asList(ints));
-
-        item2.notifyDataSetChanged();
-
-        //通过TAG 获取Item
-        RecyclerCommonAdapter.Item helper = adapter.getItemByTag(ITEM2);
+          adapter.notifyDataSetChanged();
