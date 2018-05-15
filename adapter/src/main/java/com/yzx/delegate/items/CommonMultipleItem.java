@@ -17,7 +17,7 @@ import java.util.List;
  * E-mail: yangzhenxiang@chelun.com
  */
 
-public abstract class CommonMultipleItem <T> extends DelegateItem {
+public class CommonMultipleItem <T> extends DelegateItem {
 
     public abstract class MultipleChildItem {
 
