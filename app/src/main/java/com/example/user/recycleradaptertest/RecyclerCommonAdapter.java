@@ -2,11 +2,14 @@ package com.example.user.recycleradaptertest;
 
 import android.content.Context;
 import android.graphics.Bitmap;
+
+import android.support.annotation.DrawableRes;
 import android.support.annotation.IdRes;
+import android.support.annotation.IntRange;
 import android.support.annotation.LayoutRes;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
-import android.text.Spannable;
+import android.text.Spanned;
 import android.util.SparseArray;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,8 +18,10 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.util.ArrayList;
-import java.util.HashMap;
+
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Set;
 
 /**
  * Created by yangzhenxiang on 2017/11/13.
@@ -37,20 +42,21 @@ public class RecyclerCommonAdapter extends RecyclerView.Adapter<RecyclerCommonAd
         factory = LayoutInflater.from(context);
     }
 
-    private SparseArray<Item> multiHandleItems = new SparseArray<>();
+    private LinkedHashMap<Integer, Item> multiHandleItems = new LinkedHashMap<>();
 
-    private HashMap<Item, Integer> scopeRecord = new HashMap<>();
+    public <T extends Item> T getItemByTag(int tag){
+       return (T) multiHandleItems.get(tag);
+    }
 
-    public static final int NO_LAYOUT_RESOURCE_FLAG = -1;
+    public static final int NO_LAYOUT_RESOURCE_FLAG = -432432424;  //最好定义为别人不知道的，负责，
 
     @Override
     public RecyclerCommonAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+
         if (viewType != NO_LAYOUT_RESOURCE_FLAG) {
             RecyclerCommonAdapter.ViewHolder viewHolder =
-                    new RecyclerCommonAdapter.ViewHolder(factory.inflate(viewType, parent, false));
-            if (multiHandleItems.get(viewType) != null) {
-                viewHolder.setTag(multiHandleItems.get(viewType));
-            }
+                    new RecyclerCommonAdapter.ViewHolder(factory.inflate(multiHandleItems.get(viewType).getLayoutResId(), parent, false));
+            viewHolder.setTag(multiHandleItems.get(viewType));
             return viewHolder;
         } else {
             //没有布局则填充一个 view
@@ -70,65 +76,102 @@ public class RecyclerCommonAdapter extends RecyclerView.Adapter<RecyclerCommonAd
 
     @Override
     public int getItemViewType(int position) {
-        int size = multiHandleItems.size();
-        for (int i = 0; i < size; i++) {
-            int key = multiHandleItems.keyAt(i);
-            if (multiHandleItems.get(key).handleItem(position)) {
-                return key;
+
+        for (Integer integer : multiHandleItems.keySet()) {
+            Item item = multiHandleItems.get(integer);
+            if (item.handleItem(position)) {
+                return integer;
             }
         }
+
         return NO_LAYOUT_RESOURCE_FLAG;
     }
 
     @Override
     public int getItemCount() {
         int count = 0;
-        int size = multiHandleItems.size();
-        for (int i = 0; i < size; i++) {
-            int key = multiHandleItems.keyAt(i);
-            multiHandleItems.get(key).setScopeStartPosition(count);
-            scopeRecord.put(multiHandleItems.get(key), count);
-            count += multiHandleItems.get(key).getCount();
 
+        for (Integer integer : multiHandleItems.keySet()) {
+            multiHandleItems.get(integer).setScopeStartPosition(count);
+            count += multiHandleItems.get(integer).getCount();
         }
+
         return count;
     }
 
     public <M extends Item> RecyclerCommonAdapter registerItem(@NonNull M m) {
         m.setAdapter(this);
         m.setContext(context);
-        if (m.getLayoutResId() != 0) multiHandleItems.put(m.getLayoutResId(), m);
+
+        multiHandleItems.put(m.getTag(), m);
+        return this;
+    }
+
+
+    public <M extends Item> RecyclerCommonAdapter registerItem(@NonNull M m, int location) {
+        m.setAdapter(this);
+        m.setContext(context);
+        List<Item> list = new ArrayList<>();
+        Set<Integer> sets = multiHandleItems.keySet();
+        for (Integer set : sets) {
+            if (set.intValue() != m.getTag()) {
+                list.add(multiHandleItems.get(set));
+            }
+        }
+        list.add(location, m);
+        multiHandleItems.clear();
+        for (Item item : list) {
+            multiHandleItems.put(item.getTag(), item);
+        }
+        return this;
+    }
+
+    public <M extends Item> RecyclerCommonAdapter unregisterItem(@NonNull M m) {
+        m.setAdapter(null);
+        m.setContext(null);
+        multiHandleItems.remove(m.getTag());
         return this;
     }
 
     public <M extends Item> void removeItem(M m) {
-        multiHandleItems.remove(m.getLayoutResId());
+
+        multiHandleItems.remove(m.getTag());
     }
 
-    public void clearMultiIem() {
+    public void clearMultiItem() {
         multiHandleItems.clear();
     }
 
-    private static abstract class Item {
+    /**
+     * 一般用于固定布局
+     */
+    public static abstract class Item {
 
         private RecyclerCommonAdapter adapter;
         private int count;
         private int scopeStartPosition;
         protected Context context;
 
+        private int tag;
+
+        public int getTag() {
+            return tag;
+        }
+
         public void setContext(@NonNull Context context) {
             this.context = context;
         }
 
-        public Item(@LayoutRes int layoutResId) {
-            this(layoutResId, 0);
+
+        public Item(int tag, @LayoutRes int layoutResId) {
+            this(tag, layoutResId, 0);
         }
 
-        public Item(@LayoutRes int layoutResId, int count) {
+        public Item(int tag, @LayoutRes int layoutResId, int count) {
+            this.tag = tag;
             this.layoutResId = layoutResId;
             this.count = count;
         }
-
 
         /****数据改变，adapter刷新****/
         // 绑定adapter
@@ -136,7 +179,7 @@ public class RecyclerCommonAdapter extends RecyclerView.Adapter<RecyclerCommonAd
             this.adapter = adapter;
         }
 
-        public void setCount(@NonNull int count) {
+        public void setCount(@IntRange(from = 0) int count) {
             this.count = count;
         }
 
@@ -204,13 +247,14 @@ public class RecyclerCommonAdapter extends RecyclerView.Adapter<RecyclerCommonAd
      */
     public static class FixItem extends Item {
 
-        public FixItem(int layoutResId) {
-            super(layoutResId);
+        public FixItem(int tag, int layoutResId) {
+            super(tag, layoutResId);
         }
 
-        public FixItem(int layoutResId, int count) {
-            super(layoutResId, count);
+        public FixItem(int tag, int layoutResId, int count) {
+            super(tag, layoutResId, count);
         }
+
 
         @Override
         protected void convert(RecyclerCommonAdapter.ViewHolder holder, int position, int positionAtTotal) {
@@ -222,12 +266,13 @@ public class RecyclerCommonAdapter extends RecyclerView.Adapter<RecyclerCommonAd
 
         public List<T> data = new ArrayList<>();
 
-        public CommonItem(int layoutResId) {
-            super(layoutResId);
+
+        public CommonItem(int tag, int layoutResId) {
+            super(tag, layoutResId);
         }
 
-        public CommonItem(int layoutResId, List<T> data) {
-            super(layoutResId);
+        public CommonItem(int tag, int layoutResId, List<T> data) {
+            super(tag, layoutResId);
             setData(data);
         }
 
@@ -236,14 +281,14 @@ public class RecyclerCommonAdapter extends RecyclerView.Adapter<RecyclerCommonAd
         public int getCount() {
             return data.size();
         }
-
         public void setData(List<T> data) {
             if (data == null) throw new NullPointerException("List<T> can't be null");
             this.data = data;
         }
 
         public void addData(List<T> data) {
-            if (data == null) return;
+
+            if (data == null || data.size() == 0) return;
             this.data.addAll(data);
         }
 
@@ -252,10 +297,11 @@ public class RecyclerCommonAdapter extends RecyclerView.Adapter<RecyclerCommonAd
             convert(holder, position, positionAtTotal, data.get(position));
         }
 
-        protected abstract void convert(RecyclerCommonAdapter.ViewHolder holder, int position,int positionAtTotal, T t);
+
+        protected abstract void convert(RecyclerCommonAdapter.ViewHolder holder, int position, int positionAtTotal, T t);
     }
 
-    //common ViewHolder
+    //万能 ViewHolder
     public static class ViewHolder extends RecyclerView.ViewHolder {
 
         private SparseArray<View> views = new SparseArray<>();
@@ -285,19 +331,32 @@ public class RecyclerCommonAdapter extends RecyclerView.Adapter<RecyclerCommonAd
 
         public ViewHolder setText(@IdRes int id, String charSequence) {
             TextView tv = getView(id);
+
+            if (tv != null) {
+                tv.setText(charSequence);
+            }
+            return this;
+        }
+
+        public ViewHolder setText(@IdRes int id, CharSequence charSequence) {
+            TextView tv = getView(id);
             tv.setText(charSequence);
             return this;
         }
 
-        public ViewHolder setText(@IdRes int id, Spannable spannable) {
+
+        public ViewHolder setText(@IdRes int id, Spanned spanned) {
             TextView tv = getView(id);
-            tv.setText(spannable);
+            tv.setText(spanned);
             return this;
         }
 
         public ViewHolder setImageRes(@IdRes int id, int imgResId) {
             ImageView imageView = getView(id);
-            imageView.setImageResource(imgResId);
+
+            if (imageView != null) {
+                imageView.setImageResource(imgResId);
+            }
             return this;
         }
 
@@ -307,6 +366,26 @@ public class RecyclerCommonAdapter extends RecyclerView.Adapter<RecyclerCommonAd
             return this;
         }
 
+        public ViewHolder setViewVisible(@IdRes int id, int visible) {
+            getView(id).setVisibility(visible);
+            return this;
+        }
+
+        public TextView getTextView(@IdRes int id) {
+            return getView(id);
+        }
+
+        public ViewHolder setSelected(@IdRes int id, boolean select) {
+            getView(id).setSelected(select);
+            return this;
+        }
+
+
+        public ViewHolder setBackGroundDrawable(@IdRes int id, @DrawableRes int drawableRes) {
+            getView(id).setBackground(getView(id).getContext().getResources().getDrawable(drawableRes));
+            return this;
+        }
     }
+
 
 }

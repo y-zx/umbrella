@@ -21,6 +21,13 @@ public class MainActivity extends AppCompatActivity {
         return findViewById(id);
     }
 
+<<<<<<< HEAD
+=======
+    int ITEM1 = 1;
+    int ITEM2 = 2;
+    int ITEM3 = 3;
+
+>>>>>>> 38921d7a7d098dc3cc2ff7c80a57217e8a7ff963
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -34,7 +41,8 @@ public class MainActivity extends AppCompatActivity {
 
         //布局类型1
         //RecyclerCommonAdapter.CommonItem<MyBean> 一般用于网络数据item展示, convert 中设置数据，点击事件等
-        RecyclerCommonAdapter.CommonItem<String> item = new RecyclerCommonAdapter.CommonItem<String>(R.layout.cell_main_recycler_item) {
+
+        RecyclerCommonAdapter.CommonItem<String> item = new RecyclerCommonAdapter.CommonItem<String>(ITEM1, R.layout.cell_main_recycler_item) {
             @Override
             protected void convert(RecyclerCommonAdapter.ViewHolder holder, int position, int positionAtTotal, String s) {
                 holder.setText(R.id.tv_main_recycler_item, s);
@@ -42,28 +50,35 @@ public class MainActivity extends AppCompatActivity {
                 //  getScopeEndPosition()----获取 该布局类型 结束position
                 //  getAdapter() 获取adapter
                 //  getCount() 获取该类型布局 （注入的数据的总长度）
+
+
             }
         };
-        //布局类型2  同一种item设置不用的布局資源也是不同的类型
-        RecyclerCommonAdapter.CommonItem<Integer> item2 = new RecyclerCommonAdapter.CommonItem<Integer>(R.layout.cell_main_recycler_item2) {
+        //布局类型2  只要第一个参数 值不同，就是不同的ViewTyp
+        RecyclerCommonAdapter.CommonItem<Integer> item2 = new RecyclerCommonAdapter.CommonItem<Integer>(ITEM2, R.layout.cell_main_recycler_item2) {
             @Override
             protected void convert(RecyclerCommonAdapter.ViewHolder holder, int position, int positionAtTotal, Integer i) {
                 holder.setText(R.id.tv_main_recycler_item2, "數據 = " + i);
+                //  getScopeStartPosition();----获取 该布局类型 起始position
+                //  getScopeEndPosition()----获取 该布局类型 结束position
+                //  getAdapter() 获取adapter
+                //  getCount() 获取该类型布局 （注入的数据的总长度）
+
 
             }
         };
 
         //布局类型3
         //RecyclerCommonAdapter.FixItem 一般用于固定长度布局，也可以用于网络数据布局 通过setCount改变该类型item个数
-        RecyclerCommonAdapter.FixItem item1 = new RecyclerCommonAdapter.FixItem(R.layout.cell_my_layout, 2) {
+
+        RecyclerCommonAdapter.FixItem item1 = new RecyclerCommonAdapter.FixItem(ITEM3, R.layout.cell_my_layout, 2) {
             @Override
             protected void convert(RecyclerCommonAdapter.ViewHolder holder, final int position, final int positionAtTotal) {
                 super.convert(holder, position, positionAtTotal);
-                //設置點擊事件
                 holder.getView(R.id.btn).setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        Toast.makeText(context, "相对位置 " + position + " 绝对位置 " + positionAtTotal, Toast.LENGTH_SHORT).show();
+                        Toast.makeText(context, "相对位置 " + position + " 绝对 " + positionAtTotal, Toast.LENGTH_SHORT).show();
                     }
                 });
             }
@@ -73,8 +88,9 @@ public class MainActivity extends AppCompatActivity {
         //布局类型3.... 等等等，可自定义，几乎可 用以上两个 item 完成全部布局
 
 
-        //注册布局1，注册布局2
-        adapter.registerItem(item).registerItem(item1).registerItem(item2);
+
+        //注册布局1，注册布局2, 支持布局类型的position插入,以及移除
+        adapter.registerItem(item).registerItem(item1, 0).registerItem(item2);
 
         // 布局1 注入 数据， 数据类型声明泛型 RecyclerCommonAdapter.CommonItem<String> ，可以是任何类型
         item.addData(Arrays.asList(titles));
@@ -84,10 +100,13 @@ public class MainActivity extends AppCompatActivity {
 
         // 只刷新该类型全部的Item，其他类型不刷新
         //item.notifyRangeSetChanged();
-        
+
         item2.addData(Arrays.asList(ints));
 
         item2.notifyDataSetChanged();
+
+        //通过TAG 获取Item
+        RecyclerCommonAdapter.Item helper = adapter.getItemByTag(ITEM2);
 
     }
 
