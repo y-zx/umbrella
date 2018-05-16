@@ -46,6 +46,11 @@ public abstract class CommonItem<T> extends DelegateItem {
         }
     }
 
+    public List<T> getData() {
+        return data;
+    }
+
+
     @Override
     public void convert(CommonViewHolder holder, int position, int positionAtTotal) {
         convert(holder, position, positionAtTotal, data.get(position));

@@ -17,7 +17,7 @@ import java.util.List;
  * E-mail: yangzhenxiang@chelun.com
  */
 
-public class CommonMultipleItem <T> extends DelegateItem {
+public class CommonMultipleItem<T> extends DelegateItem {
 
     public abstract class MultipleChildItem {
 
@@ -35,7 +35,7 @@ public class CommonMultipleItem <T> extends DelegateItem {
         }
 
 
-        public int getTotalCount(){
+        public int getTotalCount() {
             return CommonMultipleItem.this.getCount();
         }
 
@@ -106,6 +106,10 @@ public class CommonMultipleItem <T> extends DelegateItem {
         if (data != null && data.size() > 0) {
             this.data.addAll(data);
         }
+    }
+
+    public List<T> getData() {
+        return data;
     }
 
     @Override

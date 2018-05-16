@@ -9,7 +9,7 @@ import com.yzx.delegate.holder.CommonViewHolder;
  * E-mail: yangzhenxiang@chelun.com
  */
 
-public abstract class FixItemT <T> extends DelegateItem {
+public abstract class FixItemT<T> extends DelegateItem {
 
     private T t;
 
@@ -23,6 +23,10 @@ public abstract class FixItemT <T> extends DelegateItem {
 
     public void setData(T t) {
         this.t = t;
+    }
+
+    public T getData() {
+        return t;
     }
 
     @Override

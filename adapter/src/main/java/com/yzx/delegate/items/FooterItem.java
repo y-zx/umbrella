@@ -1,5 +1,7 @@
 package com.yzx.delegate.items;
 
+import android.view.View;
+
 import com.yzx.delegate.holder.CommonViewHolder;
 
 /**
@@ -16,6 +18,7 @@ public abstract class FooterItem extends DelegateItem {
     public static final int FOOTER_STATUS_LOADING = 2;
     public static final int FOOTER_STATUS_LOADING_ERROR = 3;
     public static final int FOOTER_STATUS_NO_MORE = 4;
+    public static final int FOOTER_STATUS_GONE = 5;
     public int footerStatus;
 
     CommonViewHolder holder;
@@ -43,16 +46,23 @@ public abstract class FooterItem extends DelegateItem {
         if (listener != null) {
             switch (footerStatus) {
                 case FOOTER_STATUS_LOADING_COMPLETE:
+                    holder.itemView.setVisibility(View.VISIBLE);
                     listener.loadComplete(holder);
                     break;
                 case FOOTER_STATUS_LOADING:
+                    holder.itemView.setVisibility(View.VISIBLE);
                     listener.loading(holder);
                     break;
                 case FOOTER_STATUS_LOADING_ERROR:
+                    holder.itemView.setVisibility(View.VISIBLE);
                     listener.loadError(holder);
                     break;
                 case FOOTER_STATUS_NO_MORE:
+                    holder.itemView.setVisibility(View.VISIBLE);
                     listener.noMore(holder);
+                    break;
+                case FOOTER_STATUS_GONE:
+                    holder.itemView.setVisibility(View.GONE);
                     break;
             }
         }
@@ -73,6 +83,10 @@ public abstract class FooterItem extends DelegateItem {
 
     public void setFooterStatusLoadError() {
         setFooterStatus(FOOTER_STATUS_LOADING_ERROR);
+    }
+
+    public void setFooterStatusGone() {
+        setFooterStatus(FOOTER_STATUS_GONE);
     }
 
     public int getFooterStatus() {
