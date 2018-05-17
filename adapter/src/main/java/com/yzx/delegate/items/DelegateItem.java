@@ -55,6 +55,10 @@ public abstract class DelegateItem {
         adapter.notifyItemRangeChanged(getScopeStartPosition(), getScopeEndPosition());
     }
 
+    public void notifyItemSetChanged(int position){
+        adapter.notifyItemChanged(getScopeStartPosition()+position);
+    }
+
     public RecyclerDelegateAdapter getAdapter() {
         return adapter;
     }
