@@ -1,5 +1,5 @@
 # RecyclerDelegateAdapter
-###RecyclerView 代理适配器
+RecyclerView 代理适配器
 
 
 use sample:
@@ -94,4 +94,4 @@ use sample:
 
 
 
-#####gradle库依赖： compile 'com.yzx.adapter:umbrella:1.0.0'
+        gradle库依赖： compile 'com.yzx.adapter:umbrella:1.0.0'
