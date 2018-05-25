@@ -91,3 +91,7 @@ use sample:
                   .registerItem(footerItem);
 
           adapter.notifyDataSetChanged();
+
+
+
+ gradle库依赖： compile 'com.yzx.adapter:umbrella:1.0.0'
