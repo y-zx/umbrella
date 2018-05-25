@@ -1,0 +1,24 @@
+ext {
+    bintrayRepo = 'maven' //jcenter上的仓库名，习惯用maven
+    bintrayName = 'umbrella' //发布到JCenter上的项目名字
+    bintrayUserOrg = 'yangzx' //jcenter 上的用户名
+    publishedGroupId = 'com.yzx.adapter' //groupId
+    libraryName = 'adapter' //name
+    artifact = 'umbrella'
+
+    libraryDescription = "A delegate adapter for RecyclerView"
+
+    siteUrl = 'https://github.com/Iamnewhand/RecyclerDelegateAdapter'
+    gitUrl = 'https://github.com/Iamnewhand/RecyclerDelegateAdapter.git'
+
+    developerId = 'yangzx'
+    developerName = 'yangzx'
+    developerEmail = 'yzxandroid@outlook.com'
+
+    licenseName = 'The Apache Software License, Version 2.0'
+    licenseUrl = 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+    allLicenses = ["Apache-2.0"]
+
+
+    libraryVersion = '1.0.0' //每次发版修改版本号
+}

@@ -1,6 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="Encoding">
+    <file url="file://$PROJECT_DIR$/umbrella/src/main/java/com/yzx/delegate/RecyclerDelegateAdapter.java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/umbrella/src/main/java/com/yzx/delegate/holder/CommonViewHolder.java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/umbrella/src/main/java/com/yzx/delegate/items/CommonItem.java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/umbrella/src/main/java/com/yzx/delegate/items/CommonMultipleItem.java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/umbrella/src/main/java/com/yzx/delegate/items/DelegateItem.java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/umbrella/src/main/java/com/yzx/delegate/items/FixItem.java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/umbrella/src/main/java/com/yzx/delegate/items/FixItemT.java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/umbrella/src/main/java/com/yzx/delegate/items/FooterItem.java" charset="UTF-8" />
     <file url="PROJECT" charset="UTF-8" />
   </component>
 </project>
