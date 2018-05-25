@@ -2,9 +2,10 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
+      <module fileurl="file://E:\workspace\recyclerAdapter\umbrella\adapter.iml" filepath="E:\workspace\recyclerAdapter\umbrella\adapter.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
       <module fileurl="file://$PROJECT_DIR$/recyclerAdapter.iml" filepath="$PROJECT_DIR$/recyclerAdapter.iml" />
-      <module fileurl="file://$PROJECT_DIR$/umbrella/adapter.iml" filepath="$PROJECT_DIR$/umbrella/adapter.iml" />
+      <module fileurl="file://$PROJECT_DIR$/umbrella/umbrella.iml" filepath="$PROJECT_DIR$/umbrella/umbrella.iml" />
     </modules>
   </component>
 </project>
