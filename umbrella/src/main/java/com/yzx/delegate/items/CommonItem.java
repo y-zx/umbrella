@@ -46,6 +46,12 @@ public abstract class CommonItem<T> extends DelegateItem {
         }
     }
 
+    public void addData(T data) {
+        if (this.data != null && data != null) {
+            this.data.add(data);
+        }
+    }
+
     public List<T> getData() {
         return data;
     }
