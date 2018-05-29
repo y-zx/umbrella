@@ -7,7 +7,7 @@ install {
     repositories.mavenInstaller {
         pom {
             project {
-                packaging 'jar'
+                packaging packagingWay
                 groupId publishedGroupId
                 artifactId artifact
 

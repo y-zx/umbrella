@@ -16,21 +16,26 @@ if (project.hasProperty("android")) { // Android libraries
         failOnError false
     }
 } else { // Java libraries
+    //生成源文件
     task sourcesJar(type: Jar, dependsOn: classes) {
         classifier = 'sources'
         from sourceSets.main.allSource
     }
 }
 
+//文档打包成jar
 task javadocJar(type: Jar, dependsOn: javadoc) {
     classifier = 'javadoc'
     from javadoc.destinationDir
 }
 
+//上传到jcenter所需要的源码文件
 artifacts {
     archives javadocJar
     archives sourcesJar
 }
+
+//上传到jcenter
 Properties properties = new Properties()
 properties.load(project.rootProject.file('local.properties').newDataInputStream())
 bintray {
@@ -40,12 +45,18 @@ bintray {
     configurations = ['archives']
     pkg {
         repo = bintrayRepo
-        name = bintrayName
+        name = bintrayName   //发布到JCenter上的项目名字，必须填写
         desc = libraryDescription
         websiteUrl = siteUrl
         vcsUrl = gitUrl
         licenses = allLicenses
         publish = true
         publicDownloadNumbers = true
+    }
+    javadoc { //jav doc采用utf-8编码否则会报“GBK的不可映射字符”错误
+        options {
+            encoding "UTF-8"
+            charSet 'UTF-8'
+        }
     }
 }

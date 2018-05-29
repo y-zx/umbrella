@@ -19,6 +19,7 @@ ext {
     licenseUrl = 'http://www.apache.org/licenses/LICENSE-2.0.txt'
     allLicenses = ["Apache-2.0"]
 
+    packagingWay = 'jar'
 
-    libraryVersion = '1.0.0' //每次发版修改版本号
+    libraryVersion = '1.0.1' //每次发版修改版本号
 }
