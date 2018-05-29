@@ -218,6 +218,13 @@ public class RecyclerDelegateAdapter extends RecyclerView.Adapter<CommonViewHold
         }
     }
 
+    public void setFooterStatusGone(){
+        FooterItem item = (FooterItem) multiHandleItems.get(footerResId);
+        if (item != null) {
+            item.setFooterStatusGone();
+        }
+    }
+
     public int getFooterStatus() {
         FooterItem item = (FooterItem) multiHandleItems.get(footerResId);
         if (item != null){
