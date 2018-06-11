@@ -52,11 +52,15 @@ public abstract class DelegateItem {
     }
 
     public void notifyRangeSetChanged() {
-        adapter.notifyItemRangeChanged(getScopeStartPosition(), getScopeEndPosition());
+        adapter.notifyItemRangeChanged(getScopeStartPosition(), getCount());
     }
 
-    public void notifyItemSetChanged(int position){
-        adapter.notifyItemChanged(getScopeStartPosition()+position);
+    public void notifyRangeSetChanged(int startPosition, int count) {
+        adapter.notifyItemRangeChanged(getScopeStartPosition() + startPosition, count);
+    }
+
+    public void notifyItemSetChanged(int position) {
+        adapter.notifyItemChanged(getScopeStartPosition() + position);
     }
 
     public RecyclerDelegateAdapter getAdapter() {
