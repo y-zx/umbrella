@@ -6,6 +6,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.widget.Toast;
 
 import com.yzx.delegate.RecyclerDelegateAdapter;
 import com.yzx.delegate.holder.CommonViewHolder;
@@ -80,13 +81,20 @@ public class MainActivity extends AppCompatActivity {
         });
         commonMultipleItem.addData(Arrays.asList(ints));
 
+
+
         FooterItem footerItem = new FooterItem(R.layout.cell_my_footer) {
+            int i = 0;
             @Override
             protected void convert(CommonViewHolder holder) {
                 holder.itemView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        adapter.setFooterStatusLoading();
+                        i++;
+                        adapter.setCurrentStatus(i%2);
+
+                        adapter.notifyDataSetChanged();
+                        Toast.makeText(MainActivity.this, i%2+"", Toast.LENGTH_SHORT).show();
                     }
                 });
             }
@@ -127,6 +135,13 @@ public class MainActivity extends AppCompatActivity {
                 .registerItem(footerItem);
 
         adapter.notifyDataSetChanged();
+
+        adapter.setDifferentStatus(1);
+        adapter.registerItem(commonItem)
+                .registerItem(new FixItem(R.layout.cell_main_recycler_item, 1))
+                .registerItem(commonMultipleItem)
+                .registerItem(new FixItem(R.layout.cell_main_recycler_item, 1))
+                .registerItem(footerItem);
 
 
     }

@@ -41,12 +41,17 @@ public class RecyclerDelegateAdapter extends RecyclerView.Adapter<CommonViewHold
     public RecyclerDelegateAdapter(Context context) {
         this.context = context;
         factory = LayoutInflater.from(context);
+        statusHandleItems.put(NORMAL_STATUS, new LinkedHashMap<Integer, DelegateItem>());
     }
 
-    private LinkedHashMap<Integer, DelegateItem> multiHandleItems = new LinkedHashMap<>();
+    private SparseArray<LinkedHashMap<Integer, DelegateItem>> statusHandleItems = new SparseArray<>();
+
+    public static final int NORMAL_STATUS = 0;
+
+    private int currentStatus = NORMAL_STATUS;
 
     public <T extends DelegateItem> T getItemByTag(int resId) {
-        return (T) multiHandleItems.get(resId);
+        return (T) statusHandleItems.get(currentStatus).get(resId);
     }
 
     public static final int NO_LAYOUT_RESOURCE_FLAG = -432432424;  //最好定义为别人不知道的，负责，
@@ -58,7 +63,7 @@ public class RecyclerDelegateAdapter extends RecyclerView.Adapter<CommonViewHold
         if (viewType != NO_LAYOUT_RESOURCE_FLAG) {
             CommonViewHolder CommonViewHolder =
                     new CommonViewHolder(factory.inflate(viewType, parent, false));
-            DelegateItem item = multiHandleItems.get(viewType);
+            DelegateItem item = statusHandleItems.get(currentStatus).get(viewType);
             if (item == null) {
                 item = sparseArray.get(viewType);
             }
@@ -82,8 +87,8 @@ public class RecyclerDelegateAdapter extends RecyclerView.Adapter<CommonViewHold
 
     @Override
     public int getItemViewType(int position) {
-        for (Integer integer : multiHandleItems.keySet()) {
-            DelegateItem item = multiHandleItems.get(integer);
+        for (Integer integer : statusHandleItems.get(currentStatus).keySet()) {
+            DelegateItem item = statusHandleItems.get(currentStatus).get(integer);
             if (item.handleItem(position)) {
                 if (item instanceof CommonMultipleItem) {
                     CommonMultipleItem commonMultipleItem = (CommonMultipleItem) item;
@@ -100,9 +105,9 @@ public class RecyclerDelegateAdapter extends RecyclerView.Adapter<CommonViewHold
     @Override
     public int getItemCount() {
         int count = 0;
-        for (Integer integer : multiHandleItems.keySet()) {
-            multiHandleItems.get(integer).setScopeStartPosition(count);
-            count += multiHandleItems.get(integer).getCount();
+        for (Integer integer : statusHandleItems.get(currentStatus).keySet()) {
+            statusHandleItems.get(currentStatus).get(integer).setScopeStartPosition(count);
+            count += statusHandleItems.get(currentStatus).get(integer).getCount();
         }
         return count;
     }
@@ -125,7 +130,7 @@ public class RecyclerDelegateAdapter extends RecyclerView.Adapter<CommonViewHold
                 }
             }
         }
-        multiHandleItems.put(m.getLayoutResId(), m);
+        statusHandleItems.get(currentStatus).put(m.getLayoutResId(), m);
         return this;
     }
 
@@ -148,16 +153,16 @@ public class RecyclerDelegateAdapter extends RecyclerView.Adapter<CommonViewHold
         m.setAdapter(this);
         m.setContext(context);
         List<DelegateItem> list = new ArrayList<>();
-        Set<Integer> sets = multiHandleItems.keySet();
+        Set<Integer> sets = statusHandleItems.get(currentStatus).keySet();
         for (Integer set : sets) {
             if (set.intValue() != m.getLayoutResId()) {
-                list.add(multiHandleItems.get(set));
+                list.add(statusHandleItems.get(currentStatus).get(set));
             }
         }
         list.add(location, m);
-        multiHandleItems.clear();
+        statusHandleItems.get(currentStatus).clear();
         for (DelegateItem item : list) {
-            multiHandleItems.put(item.getLayoutResId(), item);
+            statusHandleItems.get(currentStatus).put(item.getLayoutResId(), item);
         }
         return this;
     }
@@ -177,56 +182,93 @@ public class RecyclerDelegateAdapter extends RecyclerView.Adapter<CommonViewHold
                 }
             }
         }
-        multiHandleItems.remove(m.getLayoutResId());
+        statusHandleItems.get(currentStatus).remove(m.getLayoutResId());
+        return this;
+    }
+
+    public <M extends DelegateItem> RecyclerDelegateAdapter unregisterItem(@NonNull M m, int statusValue) {
+        m.setAdapter(null);
+        m.setContext(null);
+        if (m instanceof FooterItem) {
+            footerResId = 0;
+        }
+        if (m instanceof CommonMultipleItem) {
+            CommonMultipleItem item = (CommonMultipleItem) m;
+            int size = item.multipleChildren.size();
+            for (int i = 0; i < size; i++) {
+                if (item.multipleChildren.keyAt(i) != 0) {
+                    sparseArray.remove(item.multipleChildren.keyAt(i));
+                }
+            }
+        }
+        statusHandleItems.get(statusValue).remove(m.getLayoutResId());
         return this;
     }
 
     public void clearMultiItem() {
-        multiHandleItems.clear();
+        statusHandleItems.get(currentStatus).clear();
         sparseArray.clear();
     }
 
+    public void clearAllStatusMultiItems(){
+        statusHandleItems.clear();
+        sparseArray.clear();
+    }
+
+    public void clearPointStatusMultiItem(int value){
+        statusHandleItems.get(value).clear();
+        sparseArray.clear();
+    }
+
+    public void setCurrentStatus(int statusValue){
+        currentStatus = statusValue;
+    }
+
+    public void setDifferentStatus(@IntRange(from = 1, to = Integer.MAX_VALUE) int statusValue){
+        currentStatus = statusValue;
+        statusHandleItems.put(statusValue, new LinkedHashMap<Integer, DelegateItem>());
+    }
 
     private int footerResId;
 
 
     public void setFooterStatusLoading() {
-        FooterItem item = (FooterItem) multiHandleItems.get(footerResId);
+        FooterItem item = (FooterItem) statusHandleItems.get(currentStatus).get(footerResId);
         if (item != null) {
             item.setFooterLoadingStatus();
         }
     }
 
     public void setFooterStatusLoadMore() {
-        FooterItem item = (FooterItem) multiHandleItems.get(footerResId);
+        FooterItem item = (FooterItem) statusHandleItems.get(currentStatus).get(footerResId);
         if (item != null) {
             item.setFooterStatusLoadNoMore();
         }
     }
 
     public void setFooterStatusLoadNoMore() {
-        FooterItem item = (FooterItem) multiHandleItems.get(footerResId);
+        FooterItem item = (FooterItem) statusHandleItems.get(currentStatus).get(footerResId);
         if (item != null) {
             item.setFooterStatusLoadMore();
         }
     }
 
     public void setFooterStatusLoadError() {
-        FooterItem item = (FooterItem) multiHandleItems.get(footerResId);
+        FooterItem item = (FooterItem) statusHandleItems.get(currentStatus).get(footerResId);
         if (item != null) {
             item.setFooterStatusLoadError();
         }
     }
 
     public void setFooterStatusGone(){
-        FooterItem item = (FooterItem) multiHandleItems.get(footerResId);
+        FooterItem item = (FooterItem) statusHandleItems.get(currentStatus).get(footerResId);
         if (item != null) {
             item.setFooterStatusGone();
         }
     }
 
     public int getFooterStatus() {
-        FooterItem item = (FooterItem) multiHandleItems.get(footerResId);
+        FooterItem item = (FooterItem) statusHandleItems.get(currentStatus).get(footerResId);
         if (item != null){
             return item.getFooterStatus();
         }
