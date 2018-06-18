@@ -4,6 +4,7 @@ import android.content.Context;
 import android.support.annotation.LayoutRes;
 import android.util.SparseArray;
 
+import com.yzx.delegate.DelegateManager;
 import com.yzx.delegate.RecyclerDelegateAdapter;
 import com.yzx.delegate.holder.CommonViewHolder;
 
@@ -71,7 +72,7 @@ public class CommonMultipleItem<T> extends DelegateItem {
     }
 
     public CommonMultipleItem() {
-        super(RecyclerDelegateAdapter.NO_LAYOUT_RESOURCE_FLAG + 1);
+        super(DelegateManager.NO_LAYOUT_RESOURCE_FLAG + 1);
     }
 
     public CommonMultipleItem(List<T> data) {
@@ -85,7 +86,7 @@ public class CommonMultipleItem<T> extends DelegateItem {
                 return multipleChildren.get(multipleChildren.keyAt(i)).getLayoutResId();
             }
         }
-        return RecyclerDelegateAdapter.NO_LAYOUT_RESOURCE_FLAG;
+        return DelegateManager.NO_LAYOUT_RESOURCE_FLAG;
     }
 
     @Override

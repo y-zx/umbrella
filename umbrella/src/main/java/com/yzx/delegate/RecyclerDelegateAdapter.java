@@ -35,81 +35,40 @@ public class RecyclerDelegateAdapter extends RecyclerView.Adapter<CommonViewHold
 
     private LayoutInflater factory;
 
-    /*缓存每个部局文件对应的DelegateItem， 提升onCreateCommonViewHolder效率*/
-    private SparseArray<DelegateItem> sparseArray = new SparseArray<>();
+    DelegateManager delegateManager;
 
     public RecyclerDelegateAdapter(Context context) {
         this.context = context;
         factory = LayoutInflater.from(context);
-        statusHandleItems.put(NORMAL_STATUS, new LinkedHashMap<Integer, DelegateItem>());
+        delegateManager = new DelegateManager(context, factory);
     }
 
-    private SparseArray<LinkedHashMap<Integer, DelegateItem>> statusHandleItems = new SparseArray<>();
-
-    public static final int NORMAL_STATUS = 0;
-
-    private int currentStatus = NORMAL_STATUS;
 
     public <T extends DelegateItem> T getItemByTag(int resId) {
-        return (T) statusHandleItems.get(currentStatus).get(resId);
+        return delegateManager.getItemByTag(resId);
     }
-
-    public static final int NO_LAYOUT_RESOURCE_FLAG = -432432424;  //最好定义为别人不知道的，负责，
 
 
     @Override
     public CommonViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-
-        if (viewType != NO_LAYOUT_RESOURCE_FLAG) {
-            CommonViewHolder CommonViewHolder =
-                    new CommonViewHolder(factory.inflate(viewType, parent, false));
-            DelegateItem item = statusHandleItems.get(currentStatus).get(viewType);
-            if (item == null) {
-                item = sparseArray.get(viewType);
-            }
-            CommonViewHolder.setTag(item);
-            return CommonViewHolder;
-        } else {
-            //没有布局则填充一个 view
-            return new CommonViewHolder(new View(context));
-        }
-
+        return delegateManager.onCreateViewHolder(parent, viewType);
     }
 
     @Override
     public void onBindViewHolder(CommonViewHolder holder, int position) {
-        if (holder.getTag() != null) {
-            DelegateItem item = (DelegateItem) holder.getTag();
-            item.convert(holder, position - item.getScopeStartPosition(), position);
-        }
+        delegateManager.onBindViewHolder(holder, position);
     }
-    
+
 
     @Override
     public int getItemViewType(int position) {
-        for (Integer integer : statusHandleItems.get(currentStatus).keySet()) {
-            DelegateItem item = statusHandleItems.get(currentStatus).get(integer);
-            if (item.handleItem(position)) {
-                if (item instanceof CommonMultipleItem) {
-                    CommonMultipleItem commonMultipleItem = (CommonMultipleItem) item;
-                    return commonMultipleItem.getLayoutResId(position);
-                }
-                return integer;
-            }
-        }
-
-        return NO_LAYOUT_RESOURCE_FLAG;
+        return delegateManager.getItemViewType(position);
     }
 
 
     @Override
     public int getItemCount() {
-        int count = 0;
-        for (Integer integer : statusHandleItems.get(currentStatus).keySet()) {
-            statusHandleItems.get(currentStatus).get(integer).setScopeStartPosition(count);
-            count += statusHandleItems.get(currentStatus).get(integer).getCount();
-        }
-        return count;
+        return delegateManager.getItemCount();
     }
 
 
@@ -117,20 +76,7 @@ public class RecyclerDelegateAdapter extends RecyclerView.Adapter<CommonViewHold
         if (m.getLayoutResId() == 0)
             throw new IllegalArgumentException("DelegateItem's layout resource can't be null");
         m.setAdapter(this);
-        m.setContext(context);
-        if (m instanceof FooterItem) {
-            footerResId = m.getLayoutResId();
-        }
-        if (m instanceof CommonMultipleItem) {
-            CommonMultipleItem item = (CommonMultipleItem) m;
-            int size = item.multipleChildren.size();
-            for (int i = 0; i < size; i++) {
-                if (item.multipleChildren.keyAt(i) != 0) {
-                    sparseArray.put(item.multipleChildren.keyAt(i), m);
-                }
-            }
-        }
-        statusHandleItems.get(currentStatus).put(m.getLayoutResId(), m);
+        delegateManager.registerItem(m);
         return this;
     }
 
@@ -138,138 +84,84 @@ public class RecyclerDelegateAdapter extends RecyclerView.Adapter<CommonViewHold
     public <M extends DelegateItem> RecyclerDelegateAdapter registerItem(@NonNull M m, int location) {
         if (m.getLayoutResId() == 0)
             throw new IllegalArgumentException("DelegateItem's layout resource can't be null");
-        if (m instanceof FooterItem) {
-            footerResId = m.getLayoutResId();
-        }
-        if (m instanceof CommonMultipleItem) {
-            CommonMultipleItem item = (CommonMultipleItem) m;
-            int size = item.multipleChildren.size();
-            for (int i = 0; i < size; i++) {
-                if (item.multipleChildren.keyAt(i) != 0) {
-                    sparseArray.put(item.multipleChildren.keyAt(i), m);
-                }
-            }
-        }
         m.setAdapter(this);
-        m.setContext(context);
-        List<DelegateItem> list = new ArrayList<>();
-        Set<Integer> sets = statusHandleItems.get(currentStatus).keySet();
-        for (Integer set : sets) {
-            if (set.intValue() != m.getLayoutResId()) {
-                list.add(statusHandleItems.get(currentStatus).get(set));
-            }
-        }
-        list.add(location, m);
-        statusHandleItems.get(currentStatus).clear();
-        for (DelegateItem item : list) {
-            statusHandleItems.get(currentStatus).put(item.getLayoutResId(), item);
-        }
+        delegateManager.registerItem(m, location);
         return this;
     }
 
     public <M extends DelegateItem> RecyclerDelegateAdapter unregisterItem(@NonNull M m) {
-        m.setAdapter(null);
-        m.setContext(null);
-        if (m instanceof FooterItem) {
-            footerResId = 0;
-        }
-        if (m instanceof CommonMultipleItem) {
-            CommonMultipleItem item = (CommonMultipleItem) m;
-            int size = item.multipleChildren.size();
-            for (int i = 0; i < size; i++) {
-                if (item.multipleChildren.keyAt(i) != 0) {
-                    sparseArray.remove(item.multipleChildren.keyAt(i));
-                }
-            }
-        }
-        statusHandleItems.get(currentStatus).remove(m.getLayoutResId());
+        delegateManager.unregisterItem(m);
         return this;
     }
 
     public <M extends DelegateItem> RecyclerDelegateAdapter unregisterItem(@NonNull M m, int statusValue) {
-        m.setAdapter(null);
-        m.setContext(null);
-        if (m instanceof FooterItem) {
-            footerResId = 0;
-        }
-        if (m instanceof CommonMultipleItem) {
-            CommonMultipleItem item = (CommonMultipleItem) m;
-            int size = item.multipleChildren.size();
-            for (int i = 0; i < size; i++) {
-                if (item.multipleChildren.keyAt(i) != 0) {
-                    sparseArray.remove(item.multipleChildren.keyAt(i));
-                }
-            }
-        }
-        statusHandleItems.get(statusValue).remove(m.getLayoutResId());
+        delegateManager.unregisterItem(m, statusValue);
         return this;
     }
 
     public void clearMultiItem() {
-        statusHandleItems.get(currentStatus).clear();
-        sparseArray.clear();
+        delegateManager.getStatusHandleItems().get(delegateManager.getCurrentStatus()).clear();
+        delegateManager.getDelegateArray().clear();
     }
 
-    public void clearAllStatusMultiItems(){
-        statusHandleItems.clear();
-        sparseArray.clear();
+    public void clearAllStatusMultiItems() {
+        delegateManager.getStatusHandleItems().clear();
+        delegateManager.getDelegateArray().clear();
     }
 
-    public void clearPointStatusMultiItem(int value){
-        statusHandleItems.get(value).clear();
-        sparseArray.clear();
+    public void clearPointStatusMultiItem(int value) {
+        delegateManager.getStatusHandleItems().get(value).clear();
+        delegateManager.getDelegateArray().clear();
     }
 
-    public void setCurrentStatus(int statusValue){
-        currentStatus = statusValue;
+    public void setCurrentStatus(int statusValue) {
+        delegateManager.setCurrentStatus(statusValue);
     }
 
-    public void setDifferentStatus(@IntRange(from = 1, to = Integer.MAX_VALUE) int statusValue){
-        currentStatus = statusValue;
-        statusHandleItems.put(statusValue, new LinkedHashMap<Integer, DelegateItem>());
+    public void setDifferentStatus(@IntRange(from = 1, to = Integer.MAX_VALUE) int statusValue) {
+        delegateManager.setCurrentStatus(statusValue);
+        delegateManager.getStatusHandleItems().put(statusValue, new LinkedHashMap<Integer, DelegateItem>());
     }
-
-    private int footerResId;
 
 
     public void setFooterStatusLoading() {
-        FooterItem item = (FooterItem) statusHandleItems.get(currentStatus).get(footerResId);
+        FooterItem item = (FooterItem) delegateManager.getCurrentFooterItem();
         if (item != null) {
             item.setFooterLoadingStatus();
         }
     }
 
     public void setFooterStatusLoadMore() {
-        FooterItem item = (FooterItem) statusHandleItems.get(currentStatus).get(footerResId);
+        FooterItem item = (FooterItem) delegateManager.getCurrentFooterItem();
         if (item != null) {
             item.setFooterStatusLoadNoMore();
         }
     }
 
     public void setFooterStatusLoadNoMore() {
-        FooterItem item = (FooterItem) statusHandleItems.get(currentStatus).get(footerResId);
+        FooterItem item = (FooterItem) delegateManager.getCurrentFooterItem();
         if (item != null) {
             item.setFooterStatusLoadMore();
         }
     }
 
     public void setFooterStatusLoadError() {
-        FooterItem item = (FooterItem) statusHandleItems.get(currentStatus).get(footerResId);
+        FooterItem item = (FooterItem) delegateManager.getCurrentFooterItem();
         if (item != null) {
             item.setFooterStatusLoadError();
         }
     }
 
-    public void setFooterStatusGone(){
-        FooterItem item = (FooterItem) statusHandleItems.get(currentStatus).get(footerResId);
+    public void setFooterStatusGone() {
+        FooterItem item = (FooterItem) delegateManager.getCurrentFooterItem();
         if (item != null) {
             item.setFooterStatusGone();
         }
     }
 
     public int getFooterStatus() {
-        FooterItem item = (FooterItem) statusHandleItems.get(currentStatus).get(footerResId);
-        if (item != null){
+        FooterItem item = (FooterItem) delegateManager.getCurrentFooterItem();
+        if (item != null) {
             return item.getFooterStatus();
         }
         return 0;
