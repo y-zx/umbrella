@@ -141,8 +141,6 @@ public class MainActivity extends AppCompatActivity {
                 .registerItem(commonMultipleItem)
                 .registerItem(new FixItem(R.layout.cell_main_recycler_item, 1))
                 .registerItem(footerItem);
-
-
     }
 
 
