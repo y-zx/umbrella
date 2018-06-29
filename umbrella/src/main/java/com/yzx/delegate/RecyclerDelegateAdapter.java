@@ -2,32 +2,25 @@ package com.yzx.delegate;
 
 import android.content.Context;
 import android.support.annotation.IntRange;
-import android.support.annotation.LayoutRes;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
-import android.util.SparseArray;
 import android.view.LayoutInflater;
-import android.view.View;
 import android.view.ViewGroup;
 
-import com.yzx.delegate.holder.CommonViewHolder;
-import com.yzx.delegate.items.CommonMultipleItem;
+import com.yzx.delegate.holder.ViewHolder;
 import com.yzx.delegate.items.DelegateItem;
 import com.yzx.delegate.items.FooterItem;
 
-import java.util.ArrayList;
 import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Set;
 
 /**
  * Author: yangzhenxiang
  * Time: 2018/5/8
- * Description:
- * E-mail: yangzhenxiang@chelun.com
+ * Description: recyclerView 代理适配器，实现复杂多Item，注意：每个不同的item 的布局资源文件 必须唯一
+ * E-mail: yzxandroid981@163.com
  */
 
-public class RecyclerDelegateAdapter extends RecyclerView.Adapter<CommonViewHolder> {
+public class RecyclerDelegateAdapter extends RecyclerView.Adapter<ViewHolder> {
 
     public static final String TAG = "RecyclerDelegateAdapter";
 
@@ -50,12 +43,12 @@ public class RecyclerDelegateAdapter extends RecyclerView.Adapter<CommonViewHold
 
 
     @Override
-    public CommonViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         return delegateManager.onCreateViewHolder(parent, viewType);
     }
 
     @Override
-    public void onBindViewHolder(CommonViewHolder holder, int position) {
+    public void onBindViewHolder(ViewHolder holder, int position) {
         delegateManager.onBindViewHolder(holder, position);
     }
 

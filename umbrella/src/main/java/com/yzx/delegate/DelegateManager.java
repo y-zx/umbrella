@@ -7,7 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.yzx.delegate.holder.CommonViewHolder;
+import com.yzx.delegate.holder.ViewHolder;
 import com.yzx.delegate.items.CommonMultipleItem;
 import com.yzx.delegate.items.DelegateItem;
 import com.yzx.delegate.items.FooterItem;
@@ -17,10 +17,13 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Set;
 
-/**
- * Created by yangzhenxiang on 2018/6/18.
- */
 
+/**
+ * Author: yangzhenxiang
+ * Time: 2018/5/8
+ * Description: 代理adapter的中枢逻辑处理 管理类
+ * E-mail: yzxandroid981@163.com
+ */
 public class DelegateManager {
 
     public static final int NORMAL_STATUS = 0;
@@ -73,25 +76,25 @@ public class DelegateManager {
 
     private LayoutInflater factory;
 
-    public CommonViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
 
         if (viewType != NO_LAYOUT_RESOURCE_FLAG) {
-            CommonViewHolder CommonViewHolder =
-                    new CommonViewHolder(factory.inflate(viewType, parent, false));
+            ViewHolder ViewHolder =
+                    new ViewHolder(factory.inflate(viewType, parent, false));
             DelegateItem item = getStatusHandleItems().get(getCurrentStatus()).get(viewType);
             if (item == null) {
                 item = getDelegateArray().get(viewType);
             }
-            CommonViewHolder.setTag(item);
-            return CommonViewHolder;
+            ViewHolder.setTag(item);
+            return ViewHolder;
         } else {
             //没有布局则填充一个 view
-            return new CommonViewHolder(new View(context));
+            return new ViewHolder(new View(context));
         }
 
     }
 
-    public void onBindViewHolder(CommonViewHolder holder, int position) {
+    public void onBindViewHolder(ViewHolder holder, int position) {
         if (holder.getTag() != null) {
             DelegateItem item = (DelegateItem) holder.getTag();
             item.convert(holder, position - item.getScopeStartPosition(), position);

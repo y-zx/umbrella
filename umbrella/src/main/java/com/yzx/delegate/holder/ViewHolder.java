@@ -13,11 +13,11 @@ import android.widget.TextView;
 /**
  * Author: yangzhenxiang
  * Time: 2018/5/15
- * Description:
- * E-mail: yangzhenxiang@chelun.com
+ * Description: 布局中的控件通过 getView方法中获取
+ * E-mail: yzxandroid981@163.com
  */
 
-public class CommonViewHolder extends RecyclerView.ViewHolder {
+public class ViewHolder extends RecyclerView.ViewHolder {
     private SparseArray<View> views = new SparseArray<>();
 
     private Object tag;
@@ -30,7 +30,7 @@ public class CommonViewHolder extends RecyclerView.ViewHolder {
         return tag;
     }
 
-    public CommonViewHolder(View itemView) {
+    public ViewHolder(View itemView) {
         super(itemView);
     }
 
@@ -43,7 +43,7 @@ public class CommonViewHolder extends RecyclerView.ViewHolder {
         return (E) view;
     }
 
-    public CommonViewHolder setText(@IdRes int id, String charSequence) {
+    public ViewHolder setText(@IdRes int id, String charSequence) {
         TextView tv = getView(id);
         if (tv != null) {
             tv.setText(charSequence);
@@ -51,19 +51,19 @@ public class CommonViewHolder extends RecyclerView.ViewHolder {
         return this;
     }
 
-    public CommonViewHolder setText(@IdRes int id, CharSequence charSequence) {
+    public ViewHolder setText(@IdRes int id, CharSequence charSequence) {
         TextView tv = getView(id);
         tv.setText(charSequence);
         return this;
     }
 
-    public CommonViewHolder setText(@IdRes int id, Spanned spanned) {
+    public ViewHolder setText(@IdRes int id, Spanned spanned) {
         TextView tv = getView(id);
         tv.setText(spanned);
         return this;
     }
 
-    public CommonViewHolder setImageRes(@IdRes int id, int imgResId) {
+    public ViewHolder setImageRes(@IdRes int id, int imgResId) {
         ImageView imageView = getView(id);
         if (imageView != null) {
             imageView.setImageResource(imgResId);
@@ -75,13 +75,13 @@ public class CommonViewHolder extends RecyclerView.ViewHolder {
         return getView(id);
     }
 
-    public CommonViewHolder setImageBitMap(@IdRes int id, Bitmap bitmap) {
+    public ViewHolder setImageBitMap(@IdRes int id, Bitmap bitmap) {
         ImageView imageView = getView(id);
         imageView.setImageBitmap(bitmap);
         return this;
     }
 
-   public CommonViewHolder setViewVisible(@IdRes int id, int visible) {
+    public ViewHolder setViewVisible(@IdRes int id, int visible) {
         getView(id).setVisibility(visible);
         return this;
     }
@@ -90,13 +90,13 @@ public class CommonViewHolder extends RecyclerView.ViewHolder {
         return getView(id);
     }
 
-   public CommonViewHolder setSelected(@IdRes int id, boolean select) {
+    public ViewHolder setSelected(@IdRes int id, boolean select) {
         getView(id).setSelected(select);
         return this;
     }
 
 
-   public CommonViewHolder setBackGroundDrawable(@IdRes int id, @DrawableRes int drawableRes) {
+    public ViewHolder setBackGroundDrawable(@IdRes int id, @DrawableRes int drawableRes) {
         getView(id).setBackground(getView(id).getContext().getResources().getDrawable(drawableRes));
         return this;
     }

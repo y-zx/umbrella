@@ -1,6 +1,6 @@
 package com.yzx.delegate.items;
 
-import com.yzx.delegate.holder.CommonViewHolder;
+import com.yzx.delegate.holder.ViewHolder;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -9,7 +9,7 @@ import java.util.List;
  * Author: yangzhenxiang
  * Time: 2018/5/15
  * Description:   item 个数根据数据源个数确定，但是布局为固定一种
- * E-mail: yangzhenxiang@chelun.com
+ * E-mail: yzxandroid981@163.com
  */
 
 public abstract class CommonItem<T> extends DelegateItem {
@@ -58,9 +58,9 @@ public abstract class CommonItem<T> extends DelegateItem {
 
 
     @Override
-    public void convert(CommonViewHolder holder, int position, int positionAtTotal) {
+    public void convert(ViewHolder holder, int position, int positionAtTotal) {
         convert(holder, position, positionAtTotal, data.get(position));
     }
 
-    protected abstract void convert(CommonViewHolder holder, int position, int positionAtTotal, T t);
+    protected abstract void convert(ViewHolder holder, int position, int positionAtTotal, T t);
 }

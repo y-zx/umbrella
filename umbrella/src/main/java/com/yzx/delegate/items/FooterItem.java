@@ -2,14 +2,14 @@ package com.yzx.delegate.items;
 
 import android.view.View;
 
-import com.yzx.delegate.holder.CommonViewHolder;
+import com.yzx.delegate.holder.ViewHolder;
 
 /**
  * Author: yangzhenxiang
  * Time: 2018/5/15
  * Description:足部局，最低下的足部局，固定为1个，如果需要设置4种不同状态的的UI，
- * 请重写   @Method setFooterStatusChangedListener
- * E-mail: yangzhenxiang@chelun.com
+ *              请重写   @Method setFooterStatusChangedListener
+ * E-mail: yzxandroid981@163.com
  */
 
 public abstract class FooterItem extends DelegateItem {
@@ -21,7 +21,7 @@ public abstract class FooterItem extends DelegateItem {
     public static final int FOOTER_STATUS_GONE = 5;
     public int footerStatus;
 
-    CommonViewHolder holder;
+    ViewHolder holder;
     FooterStatusChangedListener listener;
 
     public FooterItem(int layoutResId) {
@@ -30,12 +30,12 @@ public abstract class FooterItem extends DelegateItem {
     }
 
     @Override
-    public void convert(CommonViewHolder holder, int relativePosition, int positionAtTotal) {
+    public void convert(ViewHolder holder, int relativePosition, int positionAtTotal) {
         this.holder = holder;
         convert(holder);
     }
 
-    protected abstract void convert(CommonViewHolder holder);
+    protected abstract void convert(ViewHolder holder);
 
     public FooterStatusChangedListener setFooterStatusChangedListener() {
         return null;
@@ -95,12 +95,12 @@ public abstract class FooterItem extends DelegateItem {
 
     public interface FooterStatusChangedListener {
 
-        void loadComplete(CommonViewHolder holder);
+        void loadComplete(ViewHolder holder);
 
-        void loading(CommonViewHolder holder);
+        void loading(ViewHolder holder);
 
-        void loadError(CommonViewHolder holder);
+        void loadError(ViewHolder holder);
 
-        void noMore(CommonViewHolder holder);
+        void noMore(ViewHolder holder);
     }
 }

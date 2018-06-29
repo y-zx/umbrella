@@ -6,13 +6,13 @@ import android.support.annotation.LayoutRes;
 import android.support.annotation.NonNull;
 
 import com.yzx.delegate.RecyclerDelegateAdapter;
-import com.yzx.delegate.holder.CommonViewHolder;
+import com.yzx.delegate.holder.ViewHolder;
 
 /**
  * Author: yangzhenxiang
- * Time: 2018/5/15
- * Description:
- * E-mail: yangzhenxiang@chelun.com
+ * Time: 2018/5/8
+ * Description: 每种item的代理基类
+ * E-mail: yzxandroid981@163.com
  */
 
 public abstract class DelegateItem {
@@ -97,6 +97,11 @@ public abstract class DelegateItem {
         return scopeStartPosition;
     }
 
+    /***RecyclerDelegateAdapter中取某position 在recyclerView中的绝对position**/
+    public int getAbsolutePosition(int position) {
+        return getScopeStartPosition() + position;
+    }
+
     /***获取结束position**/
     public int getScopeEndPosition() {
         return getScopeStartPosition() + getCount();
@@ -105,11 +110,11 @@ public abstract class DelegateItem {
     /**
      * 数据绑定，界面处理
      *
-     * @Param RecyclerDelegateAdapter.CommonViewHolder holder  CommonViewHolder
-     * @Param int relativePosition 相对于起始位置
-     * @Param int positionAtTotal 该item在Recycler中position
+     * @Param ViewHolder holder  所有View 在holder中通过id获取
+     * @Param relativePosition 相对于起始位置
+     * @Param absolutePosition 该item在Recycler中position
      */
-    public abstract void convert(CommonViewHolder holder, int relativePosition, int positionAtTotal);
+    public abstract void convert(ViewHolder holder, int relativePosition, int absolutePosition);
 
     public Context getContext() {
         return context;
