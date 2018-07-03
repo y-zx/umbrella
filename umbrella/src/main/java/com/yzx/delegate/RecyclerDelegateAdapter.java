@@ -127,14 +127,14 @@ public class RecyclerDelegateAdapter extends RecyclerView.Adapter<ViewHolder> {
     public void setFooterStatusLoadMore() {
         FooterItem item = (FooterItem) delegateManager.getCurrentFooterItem();
         if (item != null) {
-            item.setFooterStatusLoadNoMore();
+            item.setFooterStatusLoadMore();
         }
     }
 
-    public void setFooterStatusLoadNoMore() {
+    public void setFooterStatusNoMore() {
         FooterItem item = (FooterItem) delegateManager.getCurrentFooterItem();
         if (item != null) {
-            item.setFooterStatusLoadMore();
+            item.setFooterStatusNoMore();
         }
     }
 

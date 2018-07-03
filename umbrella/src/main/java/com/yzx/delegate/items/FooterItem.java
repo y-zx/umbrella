@@ -73,7 +73,7 @@ public abstract class FooterItem extends DelegateItem {
         setFooterStatus(FOOTER_STATUS_LOADING);
     }
 
-    public void setFooterStatusLoadNoMore() {
+    public void setFooterStatusNoMore() {
         setFooterStatus(FOOTER_STATUS_NO_MORE);
     }
 
