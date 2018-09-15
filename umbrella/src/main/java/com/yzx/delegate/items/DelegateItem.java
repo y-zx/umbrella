@@ -32,7 +32,6 @@ public abstract class DelegateItem {
     }
 
     public DelegateItem(@LayoutRes int layoutResId, int count) {
-
         this.layoutResId = layoutResId;
         this.count = count;
     }
@@ -45,6 +44,10 @@ public abstract class DelegateItem {
 
     public void setCount(@IntRange(from = 0) int count) {
         this.count = count;
+    }
+
+    public void registerCallBack(Context context) {
+
     }
 
     public void notifyDataSetChanged() {

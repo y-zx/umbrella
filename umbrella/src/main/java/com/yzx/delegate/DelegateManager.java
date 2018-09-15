@@ -149,6 +149,7 @@ public class DelegateManager {
                 }
             }
         }
+        m.registerCallBack(context);
         getStatusHandleItems().get(getCurrentStatus()).put(m.getLayoutResId(), m);
     }
 
@@ -166,6 +167,7 @@ public class DelegateManager {
             }
         }
         m.setContext(context);
+        m.registerCallBack(context);
         List<DelegateItem> list = new ArrayList<>();
         Set<Integer> sets = getStatusHandleItems().get(getCurrentStatus()).keySet();
         for (Integer set : sets) {
