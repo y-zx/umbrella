@@ -1,6 +1,7 @@
 # RecyclerDelegateAdapter
 RecyclerView 代理适配器
 
+          gradle库依赖： compile 'com.yzx.adapter:umbrella:1.0.7'
 
 use sample:
 
@@ -93,5 +94,5 @@ use sample:
           adapter.notifyDataSetChanged();
 
 
-
-        gradle库依赖： compile 'com.yzx.adapter:umbrella:1.0.3'
+           
+        

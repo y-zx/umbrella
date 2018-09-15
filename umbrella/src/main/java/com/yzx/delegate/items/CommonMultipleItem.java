@@ -4,8 +4,9 @@ import android.content.Context;
 import android.support.annotation.LayoutRes;
 import android.util.SparseArray;
 
+import com.yzx.delegate.DelegateManager;
 import com.yzx.delegate.RecyclerDelegateAdapter;
-import com.yzx.delegate.holder.CommonViewHolder;
+import com.yzx.delegate.holder.ViewHolder;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -14,7 +15,7 @@ import java.util.List;
  * Author: yangzhenxiang
  * Time: 2018/5/15
  * Description: item 个数根据 数据源个数确定，布局可以设置为多中，此为中转代理
- * E-mail: yangzhenxiang@chelun.com
+ * E-mail: yzxandroid981@163.com
  */
 
 public class CommonMultipleItem<T> extends DelegateItem {
@@ -49,7 +50,7 @@ public class CommonMultipleItem<T> extends DelegateItem {
 
         protected abstract boolean handleItem(T t);
 
-        protected abstract void convert(CommonViewHolder holder, int position, int positionAtTotal, T t);
+        protected abstract void convert(ViewHolder holder, int position, int positionAtTotal, T t);
     }
 
     public List<T> data = new ArrayList<>();
@@ -71,7 +72,7 @@ public class CommonMultipleItem<T> extends DelegateItem {
     }
 
     public CommonMultipleItem() {
-        super(RecyclerDelegateAdapter.NO_LAYOUT_RESOURCE_FLAG + 1);
+        super(DelegateManager.NO_LAYOUT_RESOURCE_FLAG + 1);
     }
 
     public CommonMultipleItem(List<T> data) {
@@ -85,7 +86,7 @@ public class CommonMultipleItem<T> extends DelegateItem {
                 return multipleChildren.get(multipleChildren.keyAt(i)).getLayoutResId();
             }
         }
-        return RecyclerDelegateAdapter.NO_LAYOUT_RESOURCE_FLAG;
+        return DelegateManager.NO_LAYOUT_RESOURCE_FLAG;
     }
 
     @Override
@@ -119,7 +120,7 @@ public class CommonMultipleItem<T> extends DelegateItem {
     }
 
     @Override
-    public void convert(CommonViewHolder holder, int position, int positionAtTotal) {
+    public void convert(ViewHolder holder, int position, int positionAtTotal) {
         for (int i = 0; i < multipleChildren.size(); i++) {
             CommonMultipleItem.MultipleChildItem item = multipleChildren.get(multipleChildren.keyAt(i));
             if (item.handleItem(data.get(position))) {

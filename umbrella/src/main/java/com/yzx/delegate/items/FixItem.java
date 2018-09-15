@@ -1,12 +1,12 @@
 package com.yzx.delegate.items;
 
-import com.yzx.delegate.holder.CommonViewHolder;
+import com.yzx.delegate.holder.ViewHolder;
 
 /**
  * Author: yangzhenxiang
  * Time: 2018/5/15
  * Description: 固定布局, 不需要数据源
- * E-mail: yangzhenxiang@chelun.com
+ * E-mail: yzxandroid981@163.com
  */
 
 public class FixItem  extends DelegateItem {
@@ -20,7 +20,7 @@ public class FixItem  extends DelegateItem {
     }
 
     @Override
-    public void convert(CommonViewHolder holder, int position, int positionAtTotal) {
+    public void convert(ViewHolder holder, int position, int positionAtTotal) {
 
     }
 }

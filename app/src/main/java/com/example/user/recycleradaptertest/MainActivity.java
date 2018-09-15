@@ -9,7 +9,7 @@ import android.view.View;
 import android.widget.Toast;
 
 import com.yzx.delegate.RecyclerDelegateAdapter;
-import com.yzx.delegate.holder.CommonViewHolder;
+import com.yzx.delegate.holder.ViewHolder;
 import com.yzx.delegate.items.CommonItem;
 import com.yzx.delegate.items.CommonMultipleItem;
 import com.yzx.delegate.items.FixItem;
@@ -49,7 +49,7 @@ public class MainActivity extends AppCompatActivity {
         //item的个数 随数据源而定，布局为一种
         CommonItem<String> commonItem = new CommonItem<String>(R.layout.cell_main_recycler_item2) {
             @Override
-            protected void convert(CommonViewHolder holder, int position, int positionAtTotal, String s) {
+            protected void convert(ViewHolder holder, int position, int positionAtTotal, String s) {
                 holder.setText(R.id.tv_main_recycler_item2, s);
             }
         };
@@ -64,7 +64,7 @@ public class MainActivity extends AppCompatActivity {
             }
 
             @Override
-            protected void convert(CommonViewHolder holder, int position, int positionAtTotal, Integer integer) {
+            protected void convert(ViewHolder holder, int position, int positionAtTotal, Integer integer) {
                 holder.setText(R.id.btn, integer + "");
 
             }
@@ -75,7 +75,7 @@ public class MainActivity extends AppCompatActivity {
             }
 
             @Override
-            protected void convert(CommonViewHolder holder, int position, int positionAtTotal, Integer integer) {
+            protected void convert(ViewHolder holder, int position, int positionAtTotal, Integer integer) {
                 holder.setText(R.id.btn2, integer + "");
             }
         });
@@ -86,7 +86,7 @@ public class MainActivity extends AppCompatActivity {
         FooterItem footerItem = new FooterItem(R.layout.cell_my_footer) {
             int i = 0;
             @Override
-            protected void convert(CommonViewHolder holder) {
+            protected void convert(ViewHolder holder) {
                 holder.itemView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -103,25 +103,25 @@ public class MainActivity extends AppCompatActivity {
             public FooterStatusChangedListener setFooterStatusChangedListener() {
                 return new FooterStatusChangedListener() {
                     @Override
-                    public void loadComplete(CommonViewHolder holder) {
+                    public void loadComplete(ViewHolder holder) {
                         holder.setText(R.id.tv_footer_text, "加载更多")
                                 .setViewVisible(R.id.pb_footer_progress, View.GONE);
                     }
 
                     @Override
-                    public void loading(CommonViewHolder holder) {
+                    public void loading(ViewHolder holder) {
                         holder.setText(R.id.tv_footer_text, "正在加载")
                                 .setViewVisible(R.id.pb_footer_progress, View.VISIBLE);
                     }
 
                     @Override
-                    public void loadError(CommonViewHolder holder) {
+                    public void loadError(ViewHolder holder) {
                         holder.setText(R.id.tv_footer_text, "网络异常")
                                 .setViewVisible(R.id.pb_footer_progress, View.GONE);
                     }
 
                     @Override
-                    public void noMore(CommonViewHolder holder) {
+                    public void noMore(ViewHolder holder) {
                         holder.setText(R.id.tv_footer_text, "没有更多")
                                 .setViewVisible(R.id.pb_footer_progress, View.GONE);
                     }
@@ -138,12 +138,9 @@ public class MainActivity extends AppCompatActivity {
 
         adapter.setDifferentStatus(1);
         adapter.registerItem(commonItem)
-                .registerItem(new FixItem(R.layout.cell_main_recycler_item, 1))
                 .registerItem(commonMultipleItem)
                 .registerItem(new FixItem(R.layout.cell_main_recycler_item, 1))
                 .registerItem(footerItem);
-
-
     }
 
 

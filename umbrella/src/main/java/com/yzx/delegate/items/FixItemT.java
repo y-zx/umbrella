@@ -1,12 +1,12 @@
 package com.yzx.delegate.items;
 
-import com.yzx.delegate.holder.CommonViewHolder;
+import com.yzx.delegate.holder.ViewHolder;
 
 /**
  * Author: yangzhenxiang
  * Time: 2018/5/15
  * Description: 固定布局，需要数据源的，比如永远只有一个头部banner 而且需要 数据源给 Viewpager设置数据
- * E-mail: yangzhenxiang@chelun.com
+ * E-mail: yzxandroid981@163.com
  */
 
 public abstract class FixItemT<T> extends DelegateItem {
@@ -30,9 +30,9 @@ public abstract class FixItemT<T> extends DelegateItem {
     }
 
     @Override
-    public void convert(CommonViewHolder holder, int position, int positionAtTotal) {
+    public void convert(ViewHolder holder, int position, int positionAtTotal) {
         convert(holder, position, positionAtTotal, t);
     }
 
-    protected abstract void convert(CommonViewHolder holder, int position, int positionAtTotal, T t);
+    protected abstract void convert(ViewHolder holder, int position, int positionAtTotal, T t);
 }
