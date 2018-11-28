@@ -8,7 +8,7 @@ import com.yzx.delegate.holder.ViewHolder;
  * Author: yangzhenxiang
  * Time: 2018/5/15
  * Description:足部局，最低下的足部局，固定为1个，如果需要设置4种不同状态的的UI，
- *              请重写   @Method setFooterStatusChangedListener
+ * 请重写   @Method setFooterStatusChangedListener
  * E-mail: yzxandroid981@163.com
  */
 
@@ -43,7 +43,7 @@ public abstract class FooterItem extends DelegateItem {
 
     public void setFooterStatus(int footerStatus) {
         this.footerStatus = footerStatus;
-        if (listener != null) {
+        if (listener != null && holder != null) {
             switch (footerStatus) {
                 case FOOTER_STATUS_LOADING_COMPLETE:
                     holder.itemView.setVisibility(View.VISIBLE);

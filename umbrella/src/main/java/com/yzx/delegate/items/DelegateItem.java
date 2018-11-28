@@ -113,9 +113,9 @@ public abstract class DelegateItem {
     /**
      * 数据绑定，界面处理
      *
-     * @Param ViewHolder holder  所有View 在holder中通过id获取
-     * @Param relativePosition 相对于起始位置
-     * @Param absolutePosition 该item在Recycler中position
+     * @param holder ViewHolder  所有View 在holder中通过id获取
+     * @param relativePosition 相对于起始位置
+     * @param absolutePosition 该item在Recycler中position
      */
     public abstract void convert(ViewHolder holder, int relativePosition, int absolutePosition);
 
