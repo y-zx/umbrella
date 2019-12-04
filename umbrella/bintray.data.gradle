@@ -23,7 +23,7 @@ ext {
 
     
     /* 每次发版修改版本号
-    shell terminal E:\workspace\recyclerAdapter> gradlew bintrayUpload*/
+    shell terminal E:\workspace\recyclerAdapter> ./gradlew bintrayUpload*/
     libraryVersion = '1.1.2'
 
 
