@@ -79,6 +79,10 @@ public abstract class DelegateItem {
     public int getLayoutResId() {
         return layoutResId;
     }
+    //item layout资源
+    public int getLayoutResId(int position) {
+        return layoutResId;
+    }
 
     /***RecyclerDelegateAdapter中调用判断是否处理对应position**/
     public boolean handleItem(int position) {
@@ -118,6 +122,10 @@ public abstract class DelegateItem {
      * @Param absolutePosition 该item在Recycler中position
      */
     public abstract void convert(ViewHolder holder, int relativePosition, int absolutePosition);
+
+    public void convert(ViewHolder holder, int absolutePosition){
+        convert(holder, absolutePosition - scopeStartPosition, absolutePosition);
+    };
 
     public Context getContext() {
         return context;

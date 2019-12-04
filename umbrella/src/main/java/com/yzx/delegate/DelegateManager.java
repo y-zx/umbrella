@@ -44,9 +44,7 @@ public class DelegateManager {
         delegateArray = new SparseArray<>();
         statusHandleItems = new SparseArray<>();
         footers = new SparseArray<>();
-        statusHandleItems.put(DelegateManager.NORMAL_STATUS,
-                new LinkedHashMap<Integer, DelegateItem>());
-
+        statusHandleItems.put(DelegateManager.NORMAL_STATUS, new LinkedHashMap<Integer, DelegateItem>());
     }
 
     public SparseArray<DelegateItem> getDelegateArray() {
@@ -79,8 +77,7 @@ public class DelegateManager {
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
 
         if (viewType != NO_LAYOUT_RESOURCE_FLAG) {
-            ViewHolder ViewHolder =
-                    new ViewHolder(factory.inflate(viewType, parent, false));
+            ViewHolder ViewHolder = new ViewHolder(factory.inflate(viewType, parent, false));
             DelegateItem item = getStatusHandleItems().get(getCurrentStatus()).get(viewType);
             if (item == null) {
                 item = getDelegateArray().get(viewType);
@@ -97,7 +94,7 @@ public class DelegateManager {
     public void onBindViewHolder(ViewHolder holder, int position) {
         if (holder.getTag() != null) {
             DelegateItem item = (DelegateItem) holder.getTag();
-            item.convert(holder, position - item.getScopeStartPosition(), position);
+            item.convert(holder, position);
         }
     }
 
@@ -105,11 +102,7 @@ public class DelegateManager {
         for (Integer integer : getStatusHandleItems().get(getCurrentStatus()).keySet()) {
             DelegateItem item = getStatusHandleItems().get(getCurrentStatus()).get(integer);
             if (item.handleItem(position)) {
-                if (item instanceof CommonMultipleItem) {
-                    CommonMultipleItem commonMultipleItem = (CommonMultipleItem) item;
-                    return commonMultipleItem.getLayoutResId(position);
-                }
-                return integer;
+                return item.getLayoutResId(position);
             }
         }
 
@@ -171,7 +164,7 @@ public class DelegateManager {
         List<DelegateItem> list = new ArrayList<>();
         Set<Integer> sets = getStatusHandleItems().get(getCurrentStatus()).keySet();
         for (Integer set : sets) {
-            if (set.intValue() != m.getLayoutResId()) {
+            if (set != m.getLayoutResId()) {
                 list.add(getStatusHandleItems().get(getCurrentStatus()).get(set));
             }
         }

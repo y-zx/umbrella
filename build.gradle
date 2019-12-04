@@ -20,6 +20,8 @@ buildscript {
 
 allprojects {
     repositories {
+        //如果下载依赖sdk 出现 SSL peer shut down incorrectly，可打开下面阿里云镜像仓库下载
+//        maven { url 'http://maven.aliyun.com/nexus/content/groups/public/' }
         google()
         jcenter()
     }

@@ -14,7 +14,7 @@ import java.util.List;
 /**
  * Author: yangzhenxiang
  * Time: 2018/5/15
- * Description: item 个数根据 数据源个数确定，布局可以设置为多中，此为中转代理
+ * Description: item 个数根据 数据源个数确定，布局可以设置为多种，此为中转代理
  * E-mail: yzxandroid981@163.com
  */
 
@@ -50,7 +50,15 @@ public class CommonMultipleItem<T> extends DelegateItem {
 
         protected abstract boolean handleItem(T t);
 
+        protected boolean handleItem(int position){
+           return handleItem(data.get(position - getScopeStartPosition()));
+        }
+
         protected abstract void convert(ViewHolder holder, int position, int positionAtTotal, T t);
+
+        protected void convert(ViewHolder holder, int position, int positionAtTotal){
+            convert(holder, position, positionAtTotal, data.get(position));
+        }
     }
 
     public List<T> data = new ArrayList<>();
@@ -71,8 +79,11 @@ public class CommonMultipleItem<T> extends DelegateItem {
         return this;
     }
 
+    private static int MULTIPLE_LAYOUT_OFFSET = 1;
+
+    // ++MULTIPLE_LAYOUT_OFFSET 防止同一个adapter 注册两个 CommonMultipleItem时 覆盖
     public CommonMultipleItem() {
-        super(DelegateManager.NO_LAYOUT_RESOURCE_FLAG + 1);
+        super(DelegateManager.NO_LAYOUT_RESOURCE_FLAG + (++MULTIPLE_LAYOUT_OFFSET));
     }
 
     public CommonMultipleItem(List<T> data) {
@@ -80,9 +91,10 @@ public class CommonMultipleItem<T> extends DelegateItem {
         setData(data);
     }
 
+    @Override
     public int getLayoutResId(int position) {
         for (int i = 0; i < multipleChildren.size(); i++) {
-            if (multipleChildren.get(multipleChildren.keyAt(i)).handleItem(data.get(position - getScopeStartPosition()))) {
+            if (multipleChildren.get(multipleChildren.keyAt(i)).handleItem(position)) {
                 return multipleChildren.get(multipleChildren.keyAt(i)).getLayoutResId();
             }
         }
@@ -123,10 +135,12 @@ public class CommonMultipleItem<T> extends DelegateItem {
     public void convert(ViewHolder holder, int position, int positionAtTotal) {
         for (int i = 0; i < multipleChildren.size(); i++) {
             CommonMultipleItem.MultipleChildItem item = multipleChildren.get(multipleChildren.keyAt(i));
-            if (item.handleItem(data.get(position))) {
-                item.convert(holder, position, positionAtTotal, data.get(position));
+            if (item.handleItem(positionAtTotal)) {
+                item.convert(holder, position, positionAtTotal);
             }
         }
     }
+
+
 
 }
