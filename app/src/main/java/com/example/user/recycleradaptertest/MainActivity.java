@@ -46,6 +46,9 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void initDelegateAdpter() {
+
+
+
         //item的个数 随数据源而定，布局为一种
         CommonItem<String> commonItem = new CommonItem<String>(R.layout.cell_main_recycler_item2) {
             @Override
@@ -81,6 +84,32 @@ public class MainActivity extends AppCompatActivity {
         });
         commonMultipleItem.addData(Arrays.asList(ints));
 
+
+
+        //item 的个数 随数据源而定，布局为多种
+        CommonMultipleItem<Integer> commonMultipleItem2= new CommonMultipleItem<>();
+        commonMultipleItem2.registerMultileChildItem(commonMultipleItem2.new MultipleChildItem(R.layout.cell_my_layout3) {
+            @Override
+            protected boolean handleItem(Integer integer) {
+                return integer < 7;
+            }
+
+            @Override
+            protected void convert(ViewHolder holder, int position, int positionAtTotal, Integer integer) {
+
+            }
+        }).registerMultileChildItem(commonMultipleItem2.new MultipleChildItem(R.layout.cell_my_layout4) {
+            @Override
+            protected boolean handleItem(Integer integer) {
+                return integer >= 7;
+            }
+
+            @Override
+            protected void convert(ViewHolder holder, int position, int positionAtTotal, Integer integer) {
+
+            }
+        });
+        commonMultipleItem2.addData(Arrays.asList(ints));
 
 
         FooterItem footerItem = new FooterItem(R.layout.cell_my_footer) {
@@ -130,17 +159,18 @@ public class MainActivity extends AppCompatActivity {
         };
 
         adapter.registerItem(new FixItem(R.layout.cell_main_recycler_item, 1)) //固定一个item
-                .registerItem(commonItem)
                 .registerItem(commonMultipleItem)
+                .registerItem(commonItem)
+                .registerItem(commonMultipleItem2)
                 .registerItem(footerItem);
 
         adapter.notifyDataSetChanged();
 
-        adapter.setDifferentStatus(1);
-        adapter.registerItem(commonItem)
-                .registerItem(commonMultipleItem)
-                .registerItem(new FixItem(R.layout.cell_main_recycler_item, 1))
-                .registerItem(footerItem);
+//        adapter.setDifferentStatus(1);
+//        adapter.registerItem(commonItem)
+//                .registerItem(commonMultipleItem)
+//                .registerItem(new FixItem(R.layout.cell_main_recycler_item, 1))
+//                .registerItem(footerItem);
     }
 
 

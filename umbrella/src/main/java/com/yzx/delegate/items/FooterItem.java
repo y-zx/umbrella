@@ -62,6 +62,7 @@ public abstract class FooterItem extends DelegateItem {
                     listener.noMore(holder);
                     break;
                 case FOOTER_STATUS_GONE:
+                default:
                     holder.itemView.setVisibility(View.GONE);
                     break;
             }

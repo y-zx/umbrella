@@ -66,8 +66,9 @@ public class RecyclerDelegateAdapter extends RecyclerView.Adapter<ViewHolder> {
 
 
     public <M extends DelegateItem> RecyclerDelegateAdapter registerItem(@NonNull M m) {
-        if (m.getLayoutResId() == 0)
+        if (m.getLayoutResId() == 0){
             throw new IllegalArgumentException("DelegateItem's layout resource can't be null");
+        }
         m.setAdapter(this);
         delegateManager.registerItem(m);
         return this;
@@ -75,8 +76,9 @@ public class RecyclerDelegateAdapter extends RecyclerView.Adapter<ViewHolder> {
 
 
     public <M extends DelegateItem> RecyclerDelegateAdapter registerItem(@NonNull M m, int location) {
-        if (m.getLayoutResId() == 0)
+        if (m.getLayoutResId() == 0){
             throw new IllegalArgumentException("DelegateItem's layout resource can't be null");
+        }
         m.setAdapter(this);
         delegateManager.registerItem(m, location);
         return this;
