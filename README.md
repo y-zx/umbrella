@@ -1,7 +1,7 @@
 # RecyclerDelegateAdapter
 RecyclerView 代理适配器
 
-          gradle库依赖： implementation 'com.yzx.adapter:umbrella:1.0.7'
+          gradle库依赖： implementation 'com.yzx.adapter:umbrella:1.1.2'
 
 use sample:
 
