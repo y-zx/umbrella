@@ -86,6 +86,11 @@ public class ViewHolder extends RecyclerView.ViewHolder {
         return this;
     }
 
+    public ViewHolder setOnClickListener(@IdRes int id, View.OnClickListener l) {
+        getView(id).setOnClickListener(l);
+        return this;
+    }
+
     public TextView getTextView(@IdRes int id) {
         return getView(id);
     }
@@ -99,5 +104,10 @@ public class ViewHolder extends RecyclerView.ViewHolder {
     public ViewHolder setBackGroundDrawable(@IdRes int id, @DrawableRes int drawableRes) {
         getView(id).setBackground(getView(id).getContext().getResources().getDrawable(drawableRes));
         return this;
+    }
+
+    @Override
+    public String toString() {
+        return super.toString();
     }
 }
