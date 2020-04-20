@@ -14,7 +14,7 @@
         android:gravity="center"
         android:paddingLeft="10dp"
         android:paddingRight="10dp"
-        android:text="button_layout3" />
+        android:text="多重布局 2 - 1" />
 
     <TextView
         android:layout_marginLeft="50dp"
@@ -25,12 +25,18 @@
         android:gravity="center"
         android:paddingLeft="10dp"
         android:paddingRight="10dp"
-        android:text="button_layout3" />
+        android:text="多重布局 2 - 1" />
 
     <View
         android:layout_width="match_parent"
         android:layout_height="1px"
         android:layout_alignParentBottom="true"
         android:background="#000000" />
+
+    <View
+        android:background="@color/colorAccent"
+        android:layout_alignParentRight="true"
+        android:layout_width="1dp"
+        android:layout_height="40dp"/>
 
 </RelativeLayout>

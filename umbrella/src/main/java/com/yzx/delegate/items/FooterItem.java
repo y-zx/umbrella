@@ -5,11 +5,11 @@ import android.view.View;
 import com.yzx.delegate.holder.ViewHolder;
 
 /**
- * Author: yangzhenxiang
- * Time: 2018/5/15
- * Description:足部局，最低下的足部局，固定为1个，如果需要设置4种不同状态的的UI，
+ * @Author: yangzhenxiang
+ * @Time: 2018/5/15
+ * @Description:足部局，最低下的足部局，固定为1个，如果需要设置4种不同状态的的UI，
  * 请重写   @Method setFooterStatusChangedListener
- * E-mail: yzxandroid981@163.com
+ * @E-mail: yzxandroid981@163.com
  */
 
 public abstract class FooterItem extends DelegateItem {
@@ -25,7 +25,11 @@ public abstract class FooterItem extends DelegateItem {
     FooterStatusChangedListener listener;
 
     public FooterItem(int layoutResId) {
-        super(layoutResId, 1);
+        this(layoutResId, 1);
+    }
+
+    public FooterItem(int layoutResId, int spanSize) {
+        super(layoutResId, 1, spanSize);
         listener = setFooterStatusChangedListener();
     }
 

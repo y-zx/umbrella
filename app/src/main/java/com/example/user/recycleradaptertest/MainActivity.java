@@ -3,6 +3,7 @@ package com.example.user.recycleradaptertest;
 import android.os.Bundle;
 import android.support.annotation.IdRes;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
@@ -35,7 +36,14 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         recyclerView = $(R.id.recycler);
-        LinearLayoutManager manager = new LinearLayoutManager(this);
+        GridLayoutManager manager = new GridLayoutManager(this, 2);
+        GridLayoutManager.SpanSizeLookup lookup = new GridLayoutManager.SpanSizeLookup() {
+            @Override
+            public int getSpanSize(int position) {
+                return adapter.getSpanSize(position);
+            }
+        };
+        manager.setSpanSizeLookup(lookup);
         recyclerView.setLayoutManager(manager);
         //通用适配器
         adapter = new RecyclerDelegateAdapter(this);
@@ -50,7 +58,7 @@ public class MainActivity extends AppCompatActivity {
 
 
         //item的个数 随数据源而定，布局为一种
-        CommonItem<String> commonItem = new CommonItem<String>(R.layout.cell_main_recycler_item2) {
+        CommonItem<String> commonItem = new CommonItem<String>(R.layout.cell_main_recycler_item2, 2) {
             @Override
             protected void convert(ViewHolder holder, int position, int positionAtTotal, String s) {
                 holder.setText(R.id.tv_main_recycler_item2, s);
@@ -60,7 +68,7 @@ public class MainActivity extends AppCompatActivity {
 
         //item 的个数 随数据源而定，布局为多种
         CommonMultipleItem<Integer> commonMultipleItem = new CommonMultipleItem<>();
-        commonMultipleItem.registerMultileChildItem(commonMultipleItem.new MultipleChildItem(R.layout.cell_my_layout) {
+        commonMultipleItem.registerMultileChildItem(commonMultipleItem.new MultipleChildItem(R.layout.cell_my_layout, 2) {
             @Override
             protected boolean handleItem(Integer integer) {
                 return integer < 7;
@@ -68,7 +76,7 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             protected void convert(ViewHolder holder, int position, int positionAtTotal, Integer integer) {
-                holder.setText(R.id.btn, integer + "");
+
 
             }
         }).registerMultileChildItem(commonMultipleItem.new MultipleChildItem(R.layout.cell_my_layout2) {
@@ -79,7 +87,7 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             protected void convert(ViewHolder holder, int position, int positionAtTotal, Integer integer) {
-                holder.setText(R.id.btn2, integer + "");
+
             }
         });
         commonMultipleItem.addData(Arrays.asList(ints));
@@ -98,7 +106,7 @@ public class MainActivity extends AppCompatActivity {
             protected void convert(ViewHolder holder, int position, int positionAtTotal, Integer integer) {
 
             }
-        }).registerMultileChildItem(commonMultipleItem2.new MultipleChildItem(R.layout.cell_my_layout4) {
+        }).registerMultileChildItem(commonMultipleItem2.new MultipleChildItem(R.layout.cell_my_layout4,2) {
             @Override
             protected boolean handleItem(Integer integer) {
                 return integer >= 7;
@@ -112,16 +120,13 @@ public class MainActivity extends AppCompatActivity {
         commonMultipleItem2.addData(Arrays.asList(ints));
 
 
-        FooterItem footerItem = new FooterItem(R.layout.cell_my_footer) {
+        FooterItem footerItem = new FooterItem(R.layout.cell_my_footer,2 ) {
             int i = 0;
             @Override
             protected void convert(ViewHolder holder) {
                 holder.itemView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        i++;
-                        adapter.setCurrentStatus(i%2);
-
                         adapter.notifyDataSetChanged();
                         Toast.makeText(MainActivity.this, i%2+"", Toast.LENGTH_SHORT).show();
                     }
@@ -158,7 +163,7 @@ public class MainActivity extends AppCompatActivity {
             }
         };
 
-        adapter.registerItem(new FixItem(R.layout.cell_main_recycler_item, 1)) //固定一个item
+        adapter.registerItem(new FixItem(R.layout.cell_main_recycler_item, 1, 2)) //固定一个item
                 .registerItem(commonMultipleItem)
                 .registerItem(commonItem)
                 .registerItem(commonMultipleItem2)

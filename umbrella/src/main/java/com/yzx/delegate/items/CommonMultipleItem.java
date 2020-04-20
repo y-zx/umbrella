@@ -12,10 +12,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Author: yangzhenxiang
- * Time: 2018/5/15
- * Description: item 个数根据 数据源个数确定，布局可以设置为多种，此为中转代理
- * E-mail: yzxandroid981@163.com
+ * @Author: yangzhenxiang
+ * @Time: 2018/5/15
+ * @Description: item 个数根据 数据源个数确定，布局可以设置为多种，此为中转代理
+ * @E-mail: yzxandroid981@163.com
  */
 
 public class CommonMultipleItem<T> extends DelegateItem {
@@ -25,14 +25,27 @@ public class CommonMultipleItem<T> extends DelegateItem {
         protected RecyclerDelegateAdapter adapter;
         @LayoutRes
         private int layoutResId;
+        private int spanSize;
 
         public MultipleChildItem(@LayoutRes int layoutResId) {
+            this(layoutResId, 1);
+        }
+
+        public MultipleChildItem(@LayoutRes int layoutResId, int spanSize) {
             this.layoutResId = layoutResId;
+            this.spanSize = spanSize;
         }
 
         protected int getLayoutResId() {
-
             return layoutResId;
+        }
+
+        public int getSpanSize() {
+            return spanSize;
+        }
+
+        public void setSpanSize(int spanSize) {
+            this.spanSize = spanSize;
         }
 
 
@@ -50,13 +63,13 @@ public class CommonMultipleItem<T> extends DelegateItem {
 
         protected abstract boolean handleItem(T t);
 
-        protected boolean handleItem(int position){
-           return handleItem(data.get(position - getScopeStartPosition()));
+        protected boolean handleItem(int position) {
+            return handleItem(data.get(position - getScopeStartPosition()));
         }
 
         protected abstract void convert(ViewHolder holder, int position, int positionAtTotal, T t);
 
-        protected void convert(ViewHolder holder, int position, int positionAtTotal){
+        protected void convert(ViewHolder holder, int position, int positionAtTotal) {
             convert(holder, position, positionAtTotal, data.get(position));
         }
     }
@@ -106,6 +119,17 @@ public class CommonMultipleItem<T> extends DelegateItem {
         return data.size();
     }
 
+    @Override
+    public int getSpanSize(int position) {
+        for (int i = 0; i < multipleChildren.size(); i++) {
+            CommonMultipleItem.MultipleChildItem item = multipleChildren.get(multipleChildren.keyAt(i));
+            if (item.handleItem(position)) {
+                return item.getSpanSize();
+            }
+        }
+        return 1;
+    }
+
 
     public void setData(List<T> data) {
         if (data != null) {
@@ -140,7 +164,5 @@ public class CommonMultipleItem<T> extends DelegateItem {
             }
         }
     }
-
-
 
 }

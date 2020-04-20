@@ -14,7 +14,13 @@
         android:gravity="center"
         android:paddingLeft="10dp"
         android:paddingRight="10dp"
-        android:text="button"
+        android:text="多重布局 1 - 2"
         android:textColor="@android:color/white" />
+
+    <View
+        android:background="@color/colorPrimaryDark"
+        android:layout_alignParentRight="true"
+        android:layout_width="1dp"
+        android:layout_height="40dp"/>
 
 </RelativeLayout>

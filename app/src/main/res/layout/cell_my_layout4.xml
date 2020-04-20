@@ -14,7 +14,7 @@
         android:background="@color/colorPrimary"
         android:paddingLeft="10dp"
         android:paddingRight="10dp"
-        android:text="button_layout4"
+        android:text="多重布局 2 - 2"
         android:textColor="@android:color/white" />
 
 
@@ -27,7 +27,7 @@
         android:background="@color/colorPrimary"
         android:paddingLeft="10dp"
         android:paddingRight="10dp"
-        android:text="button_layout4"
+        android:text="多重布局 2 - 2"
         android:textColor="@android:color/white" />
 
 </LinearLayout>
