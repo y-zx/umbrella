@@ -10,6 +10,7 @@
         android:layout_height="match_parent"
         android:layout_alignParentRight="true"
         android:layout_margin="3dp"
+        android:layout_marginRight="10dp"
         android:background="@color/colorPrimary"
         android:gravity="center_vertical"
         android:paddingLeft="12dp"
@@ -17,5 +18,11 @@
         android:textColor="#ffffff"
         android:textSize="14sp"
         tools:text="測試" />
+
+    <View
+        android:background="@color/colorAccent"
+        android:layout_alignParentRight="true"
+        android:layout_width="1dp"
+        android:layout_height="40dp"/>
 
 </RelativeLayout>

@@ -11,10 +11,10 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 /**
- * Author: yangzhenxiang
- * Time: 2018/5/15
- * Description: 布局中的控件通过 getView方法中获取
- * E-mail: yzxandroid981@163.com
+ * @Author: yangzhenxiang
+ * @Time: 2018/5/15
+ * @Description: 布局中的控件通过 getView方法中获取
+ * @E-mail: yzxandroid981@163.com
  */
 
 public class ViewHolder extends RecyclerView.ViewHolder {

@@ -9,10 +9,10 @@ import com.yzx.delegate.RecyclerDelegateAdapter;
 import com.yzx.delegate.holder.ViewHolder;
 
 /**
- * Author: yangzhenxiang
- * Time: 2018/5/8
- * Description: 每种item的代理基类
- * E-mail: yzxandroid981@163.com
+ * @Author: yangzhenxiang
+ * @Time: 2018/5/8
+ * @Description: 每种item的代理基类
+ * @E-mail: yzxandroid981@163.com
  */
 
 public abstract class DelegateItem {
@@ -20,8 +20,16 @@ public abstract class DelegateItem {
     private RecyclerDelegateAdapter adapter;
     private int count;
     private int scopeStartPosition;
+    private int spanSize = 1;
     protected Context context;
 
+    public int getSpanSize(int position) {
+        return spanSize;
+    }
+
+    public void setSpanSize(int spanSize) {
+        this.spanSize = spanSize;
+    }
 
     public void setContext(@NonNull Context context) {
         this.context = context;
@@ -32,8 +40,13 @@ public abstract class DelegateItem {
     }
 
     public DelegateItem(@LayoutRes int layoutResId, int count) {
+       this(layoutResId, count, 1);
+    }
+
+    public DelegateItem(@LayoutRes int layoutResId, int count, int spanSize) {
         this.layoutResId = layoutResId;
         this.count = count;
+        this.spanSize = spanSize;
     }
 
     /****数据改变，adapter刷新****/
@@ -125,7 +138,7 @@ public abstract class DelegateItem {
 
     public void convert(ViewHolder holder, int absolutePosition){
         convert(holder, absolutePosition - scopeStartPosition, absolutePosition);
-    };
+    }
 
     public Context getContext() {
         return context;

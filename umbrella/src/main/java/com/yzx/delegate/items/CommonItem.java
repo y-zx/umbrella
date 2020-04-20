@@ -6,10 +6,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Author: yangzhenxiang
- * Time: 2018/5/15
- * Description:   item 个数根据数据源个数确定，但是布局为固定一种
- * E-mail: yzxandroid981@163.com
+ * @Author: yangzhenxiang
+ * @Time: 2018/5/15
+ * @Description: item 个数根据数据源个数确定，但是布局为固定一种
+ * @E-mail: yzxandroid981@163.com
  */
 
 public abstract class CommonItem<T> extends DelegateItem {
@@ -17,7 +17,11 @@ public abstract class CommonItem<T> extends DelegateItem {
     public List<T> data = new ArrayList<>();
 
     public CommonItem(int layoutResId) {
-        super(layoutResId);
+        this(layoutResId, 1);
+    }
+
+    public CommonItem(int layoutResId, int spanSize) {
+        super(layoutResId, 0, spanSize);
     }
 
     public CommonItem(int layoutResId, List<T> data) {

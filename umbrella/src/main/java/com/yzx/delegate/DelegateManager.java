@@ -19,55 +19,43 @@ import java.util.Set;
 
 
 /**
- * Author: yangzhenxiang
- * Time: 2018/5/8
- * Description: 代理adapter的中枢逻辑处理 管理类
- * E-mail: yzxandroid981@163.com
+ * @Author: yangzhenxiang
+ * @Time: 2018/5/8
+ * @Description: 代理adapter的中枢逻辑处理 管理类
+ * @E-mail: yzxandroid981@163.com
  */
 public class DelegateManager {
 
-    public static final int NORMAL_STATUS = 0;
-
-    private int currentStatus = NORMAL_STATUS;
-
-
-    /*缓存每个部局文件对应的DelegateItem， 提升onCreateCommonViewHolder效率*/
+    /**
+     * 缓存每个部局文件对应的DelegateItem， 提升onCreateCommonViewHolder效率
+     */
     private SparseArray<DelegateItem> delegateArray;
 
-    private SparseArray<LinkedHashMap<Integer, DelegateItem>> statusHandleItems;
+    private LinkedHashMap<Integer, DelegateItem> statusHandleItems;
 
-    private SparseArray<Integer> footers;
+    private int footerResId;
 
-    public DelegateManager(Context ctx, LayoutInflater inflater){
+    public DelegateManager(Context ctx, LayoutInflater inflater) {
         context = ctx;
         factory = inflater;
         delegateArray = new SparseArray<>();
-        statusHandleItems = new SparseArray<>();
-        footers = new SparseArray<>();
-        statusHandleItems.put(DelegateManager.NORMAL_STATUS, new LinkedHashMap<Integer, DelegateItem>());
+        statusHandleItems = new LinkedHashMap<>();
     }
 
     public SparseArray<DelegateItem> getDelegateArray() {
         return delegateArray;
     }
 
-    public SparseArray<LinkedHashMap<Integer, DelegateItem>> getStatusHandleItems() {
+    public LinkedHashMap<Integer, DelegateItem> getStatusHandleItems() {
         return statusHandleItems;
     }
 
-    public int getCurrentStatus() {
-        return currentStatus;
-    }
-
-    public void setCurrentStatus(int currentStatus) {
-        this.currentStatus = currentStatus;
-    }
-
     public <T extends DelegateItem> T getItemByTag(int resId) {
-        return (T) getStatusHandleItems().get(getCurrentStatus()).get(resId);
+        return (T) getStatusHandleItems().get(resId);
     }
 
-    public static final int NO_LAYOUT_RESOURCE_FLAG = -432432424;  //最好定义为别人不知道的，负责，
+    //最好定义为别人不知道的
+    public static final int NO_LAYOUT_RESOURCE_FLAG = -432432424;
 
 
     protected Context context;
@@ -75,10 +63,9 @@ public class DelegateManager {
     private LayoutInflater factory;
 
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-
         if (viewType != NO_LAYOUT_RESOURCE_FLAG) {
             ViewHolder ViewHolder = new ViewHolder(factory.inflate(viewType, parent, false));
-            DelegateItem item = getStatusHandleItems().get(getCurrentStatus()).get(viewType);
+            DelegateItem item = getStatusHandleItems().get(viewType);
             if (item == null) {
                 item = getDelegateArray().get(viewType);
             }
@@ -88,7 +75,6 @@ public class DelegateManager {
             //没有布局则填充一个 view
             return new ViewHolder(new View(context));
         }
-
     }
 
     public void onBindViewHolder(ViewHolder holder, int position) {
@@ -99,8 +85,8 @@ public class DelegateManager {
     }
 
     public int getItemViewType(int position) {
-        for (Integer integer : getStatusHandleItems().get(getCurrentStatus()).keySet()) {
-            DelegateItem item = getStatusHandleItems().get(getCurrentStatus()).get(integer);
+        for (Integer integer : getStatusHandleItems().keySet()) {
+            DelegateItem item = getStatusHandleItems().get(integer);
             if (item.handleItem(position)) {
                 return item.getLayoutResId(position);
             }
@@ -111,27 +97,26 @@ public class DelegateManager {
 
     public int getItemCount() {
         int count = 0;
-        for (Integer integer : getStatusHandleItems().get(getCurrentStatus()).keySet()) {
-            getStatusHandleItems().get(getCurrentStatus()).get(integer).setScopeStartPosition(count);
-            count += getStatusHandleItems().get(getCurrentStatus()).get(integer).getCount();
+        for (Integer integer : getStatusHandleItems().keySet()) {
+            getStatusHandleItems().get(integer).setScopeStartPosition(count);
+            count += getStatusHandleItems().get(integer).getCount();
         }
         return count;
     }
 
 
-
     public int getFooterResId() {
-        return footers.get(currentStatus);
+        return footerResId;
     }
 
-    public DelegateItem getCurrentFooterItem(){
-        return getStatusHandleItems().get(getCurrentStatus()).get(getFooterResId());
+    public DelegateItem getCurrentFooterItem() {
+        return getStatusHandleItems().get(getFooterResId());
     }
 
     public <M extends DelegateItem> void registerItem(@NonNull M m) {
         m.setContext(context);
         if (m instanceof FooterItem) {
-            footers.put(currentStatus, m.getLayoutResId());
+            footerResId = m.getLayoutResId();
         }
         if (m instanceof CommonMultipleItem) {
             CommonMultipleItem item = (CommonMultipleItem) m;
@@ -143,13 +128,13 @@ public class DelegateManager {
             }
         }
         m.registerCallBack(context);
-        getStatusHandleItems().get(getCurrentStatus()).put(m.getLayoutResId(), m);
+        getStatusHandleItems().put(m.getLayoutResId(), m);
     }
 
     public <M extends DelegateItem> void registerItem(@NonNull M m, int location) {
-         if (m instanceof FooterItem) {
-             footers.put(currentStatus, m.getLayoutResId());
-         }
+        if (m instanceof FooterItem) {
+            footerResId = m.getLayoutResId();
+        }
         if (m instanceof CommonMultipleItem) {
             CommonMultipleItem item = (CommonMultipleItem) m;
             int size = item.multipleChildren.size();
@@ -162,16 +147,16 @@ public class DelegateManager {
         m.setContext(context);
         m.registerCallBack(context);
         List<DelegateItem> list = new ArrayList<>();
-        Set<Integer> sets = getStatusHandleItems().get(getCurrentStatus()).keySet();
+        Set<Integer> sets = getStatusHandleItems().keySet();
         for (Integer set : sets) {
             if (set != m.getLayoutResId()) {
-                list.add(getStatusHandleItems().get(getCurrentStatus()).get(set));
+                list.add(getStatusHandleItems().get(set));
             }
         }
         list.add(location, m);
-        getStatusHandleItems().get(getCurrentStatus()).clear();
+        getStatusHandleItems().clear();
         for (DelegateItem item : list) {
-            getStatusHandleItems().get(getCurrentStatus()).put(item.getLayoutResId(), item);
+            getStatusHandleItems().put(item.getLayoutResId(), item);
         }
 
     }
@@ -180,7 +165,7 @@ public class DelegateManager {
         m.setAdapter(null);
         m.setContext(null);
         if (m instanceof FooterItem) {
-            footers.remove(currentStatus);
+            footerResId = -1;
         }
         if (m instanceof CommonMultipleItem) {
             CommonMultipleItem item = (CommonMultipleItem) m;
@@ -191,14 +176,14 @@ public class DelegateManager {
                 }
             }
         }
-        getStatusHandleItems().get(getCurrentStatus()).remove(m.getLayoutResId());
+        getStatusHandleItems().remove(m.getLayoutResId());
     }
 
     public <M extends DelegateItem> void unregisterItem(@NonNull M m, int statusValue) {
         m.setAdapter(null);
         m.setContext(null);
         if (m instanceof FooterItem) {
-            footers.remove(currentStatus);
+            footerResId = -1;
         }
         if (m instanceof CommonMultipleItem) {
             CommonMultipleItem item = (CommonMultipleItem) m;
@@ -209,9 +194,21 @@ public class DelegateManager {
                 }
             }
         }
-        getStatusHandleItems().get(statusValue).remove(m.getLayoutResId());
+        getStatusHandleItems().remove(m.getLayoutResId());
 
     }
 
-
+    /**
+     * 2.0.0 新功能，支持GridLayoutManager
+     */
+    public int getSpanSize(int position) {
+        for (Integer integer : getStatusHandleItems().keySet()) {
+            DelegateItem item = getStatusHandleItems().get(integer);
+            if (item.handleItem(position)) {
+                return item.getSpanSize(position);
+            }
+        }
+        //默认返回1
+        return 1;
+    }
 }
