@@ -14,10 +14,11 @@ import com.yzx.delegate.items.FooterItem;
 import java.util.LinkedHashMap;
 
 /**
- * Author: yangzhenxiang
- * Time: 2018/5/8
- * Description: recyclerView 代理适配器，实现复杂多Item，注意：每个不同的item 的布局资源文件 必须唯一
- * E-mail: yzxandroid981@163.com
+ * @Author: yangzhenxiang
+ * @Time: 2018/5/8
+ * @Description: recyclerView 代理适配器，实现复杂多Item，注意：每个不同的item 的布局资源文件 必须唯一
+ *              v2.0.0 开始支持GridLayoutManager的SpanSize。
+ * @E-mail: yzxandroid981@163.com
  */
 
 public class RecyclerDelegateAdapter extends RecyclerView.Adapter<ViewHolder> {
@@ -36,7 +37,6 @@ public class RecyclerDelegateAdapter extends RecyclerView.Adapter<ViewHolder> {
         delegateManager = new DelegateManager(context, factory);
     }
 
-
     public <T extends DelegateItem> T getItemByTag(int resId) {
         return delegateManager.getItemByTag(resId);
     }
@@ -51,7 +51,6 @@ public class RecyclerDelegateAdapter extends RecyclerView.Adapter<ViewHolder> {
     public void onBindViewHolder(ViewHolder holder, int position) {
         delegateManager.onBindViewHolder(holder, position);
     }
-
 
     @Override
     public int getItemViewType(int position) {
@@ -74,7 +73,6 @@ public class RecyclerDelegateAdapter extends RecyclerView.Adapter<ViewHolder> {
         return this;
     }
 
-
     public <M extends DelegateItem> RecyclerDelegateAdapter registerItem(@NonNull M m, int location) {
         if (m.getLayoutResId() == 0){
             throw new IllegalArgumentException("DelegateItem's layout resource can't be null");
@@ -95,29 +93,9 @@ public class RecyclerDelegateAdapter extends RecyclerView.Adapter<ViewHolder> {
     }
 
     public void clearMultiItem() {
-        delegateManager.getStatusHandleItems().get(delegateManager.getCurrentStatus()).clear();
-        delegateManager.getDelegateArray().clear();
-    }
-
-    public void clearAllStatusMultiItems() {
         delegateManager.getStatusHandleItems().clear();
         delegateManager.getDelegateArray().clear();
     }
-
-    public void clearPointStatusMultiItem(int value) {
-        delegateManager.getStatusHandleItems().get(value).clear();
-        delegateManager.getDelegateArray().clear();
-    }
-
-    public void setCurrentStatus(int statusValue) {
-        delegateManager.setCurrentStatus(statusValue);
-    }
-
-    public void setDifferentStatus(@IntRange(from = 1, to = Integer.MAX_VALUE) int statusValue) {
-        delegateManager.setCurrentStatus(statusValue);
-        delegateManager.getStatusHandleItems().put(statusValue, new LinkedHashMap<Integer, DelegateItem>());
-    }
-
 
     public void setFooterStatusLoading() {
         FooterItem item = (FooterItem) delegateManager.getCurrentFooterItem();
@@ -160,6 +138,10 @@ public class RecyclerDelegateAdapter extends RecyclerView.Adapter<ViewHolder> {
             return item.getFooterStatus();
         }
         return 0;
+    }
+
+    public int getSpanSize(int position){
+        return delegateManager.getSpanSize(position);
     }
 
 }
