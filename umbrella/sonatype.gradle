@@ -1,0 +1,29 @@
+//上传到mavenCentral
+
+Properties properties = new Properties()
+properties.load(project.rootProject.file('local.properties').newDataInputStream())
+
+artifacts {
+    archives file('./build/intermediates/aar_main_jar/release/classes.jar')
+}
+
+uploadArchives {
+    repositories {
+        mavenDeployer {
+            print "------------------uploadArchives"
+            //本地maven
+            repository(url: 'https://oss.sonatype.org/service/local/staging/deploy/maven2/') {
+                authentication(userName: properties.getProperty("sonatype.userName"),
+                        password: properties.getProperty("sonatype.pwd"))
+                pom.project {
+                    groupId 'com.yzx.adapter'
+                    artifactId 'umbrella'
+                    version '2.0.1'
+//                    packaging 'umbrella'
+                }
+            }
+        }
+    }
+}
+
+uploadArchives.dependsOn(assemble)
