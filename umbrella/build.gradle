@@ -1,6 +1,7 @@
 apply plugin: 'com.android.library'
 apply plugin: 'maven'
 apply from: 'sonatype.gradle'
+apply from: 'jitpack.gradle'
 //plugins {
 //    id 'java-library'
 //}

@@ -1,4 +1,5 @@
 //上传到mavenCentral
+apply from: './maven.data.gradle'
 
 Properties properties = new Properties()
 properties.load(project.rootProject.file('local.properties').newDataInputStream())
@@ -10,16 +11,16 @@ artifacts {
 uploadArchives {
     repositories {
         mavenDeployer {
-            print "------------------uploadArchives"
+            print "----uploadArchives"
             //本地maven
             repository(url: 'https://oss.sonatype.org/service/local/staging/deploy/maven2/') {
                 authentication(userName: properties.getProperty("sonatype.userName"),
                         password: properties.getProperty("sonatype.pwd"))
                 pom.project {
-                    groupId 'com.yzx.adapter'
-                    artifactId 'umbrella'
-                    version '2.0.1'
-//                    packaging 'umbrella'
+                    groupId publishedGroupId
+                    artifactId artifact
+                    version libraryVersion
+                    packaging packagingWay
                 }
             }
         }
