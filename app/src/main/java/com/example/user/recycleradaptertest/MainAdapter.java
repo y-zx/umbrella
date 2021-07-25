@@ -1,6 +1,7 @@
 package com.example.user.recycleradaptertest;
 
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 
 import com.example.user.recycleradaptertest.bean.MainBean;
@@ -27,8 +28,19 @@ public class MainAdapter {
         //item的个数 随数据源而定，布局为一种
         CommonItem<String> commonItem = new CommonItem<String>(R.layout.cell_main_recycler_item2, 2) {
             @Override
-            protected void convert(ViewHolder holder, int position, int positionAtTotal, String s) {
+            protected void convert(ViewHolder holder, final int position, int positionAtTotal, String s) {
                 holder.setText(R.id.book_hot, String.format("最热榜榜%s", position + 1));
+                holder.setOnViewTachStatusListener(new ViewHolder.OnViewTachStatusListener() {
+                    @Override
+                    public void onViewAttachedToWindow() {
+                        Log.d("MainAdapter", "onViewAttachedToWindow" + position);
+                    }
+
+                    @Override
+                    public void onViewDetachedFromWindow() {
+                        Log.d("MainAdapter", "onViewDetachedFromWindow" + position);
+                    }
+                });
             }
         };
         commonItem.setData(Arrays.asList(titles));

@@ -63,6 +63,17 @@ public class RecyclerDelegateAdapter extends RecyclerView.Adapter<ViewHolder> {
         return delegateManager.getItemCount();
     }
 
+    @Override
+    public void onViewAttachedToWindow(ViewHolder holder) {
+        super.onViewAttachedToWindow(holder);
+        holder.onViewAttachedToWindow();
+    }
+
+    @Override
+    public void onViewDetachedFromWindow(ViewHolder holder) {
+        super.onViewDetachedFromWindow(holder);
+        holder.onViewDetachedFromWindow();
+    }
 
     public <M extends DelegateItem> RecyclerDelegateAdapter registerItem(@NonNull M m) {
         if (m.getLayoutResId() == 0){
