@@ -1,28 +1,68 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="48dp">
+    android:layout_height="wrap_content"
+    android:paddingStart="16dp"
+    android:paddingTop="2dp"
+    android:paddingEnd="16dp"
+    android:paddingBottom="18dp">
+
+    <ImageView
+        android:background="#f5f5f5"
+        android:id="@+id/book_image"
+        android:layout_width="36dp"
+        android:layout_height="54dp"
+        android:src="@mipmap/ic_launcher"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
+        app:layout_constraintTop_toTopOf="@+id/book_image"
+        app:layout_constraintStart_toEndOf="@+id/book_image"
         android:id="@+id/tv_main_recycler_item2"
         android:layout_width="wrap_content"
-        android:layout_height="match_parent"
-        android:layout_alignParentRight="true"
-        android:layout_margin="3dp"
-        android:layout_marginRight="10dp"
-        android:background="@color/colorPrimary"
-        android:gravity="center_vertical"
-        android:paddingLeft="12dp"
-        android:paddingRight="12dp"
-        android:textColor="#ffffff"
-        android:textSize="14sp"
-        tools:text="測試" />
+        android:layout_height="wrap_content"
+        android:layout_marginTop="3dp"
+        android:layout_marginLeft="8dp"
+        android:textColor="#222"
+        android:textStyle="bold"
+        android:textSize="15sp"
+        android:text="我是超级农名" />
 
-    <View
-        android:background="@color/colorAccent"
-        android:layout_alignParentRight="true"
-        android:layout_width="1dp"
-        android:layout_height="40dp"/>
+    <TextView
+        app:layout_constraintTop_toBottomOf="@+id/tv_main_recycler_item2"
+        app:layout_constraintStart_toEndOf="@+id/book_image"
+        android:id="@+id/tv_sub_recycler_item2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:layout_marginLeft="8dp"
+        android:textColor="#999"
+        android:textSize="12sp"
+        android:text="异界都市" />
 
-</RelativeLayout>
+    <TextView
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/tv_main_recycler_item2"
+        app:layout_constraintBottom_toBottomOf="@+id/tv_main_recycler_item2"
+        android:id="@+id/book_hot"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="#999"
+        android:textSize="12sp"
+        android:text="最热榜榜一" />
+    <TextView
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/tv_sub_recycler_item2"
+        app:layout_constraintBottom_toBottomOf="@+id/tv_sub_recycler_item2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="#999"
+        android:textSize="12sp"
+        android:text="2012123热度" />
+
+
+
+</android.support.constraint.ConstraintLayout>

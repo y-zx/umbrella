@@ -1,4 +1,10 @@
 apply plugin: 'com.android.library'
+apply plugin: 'maven'
+apply from: 'sonatype.gradle'
+apply from: 'jitpack.gradle'
+//plugins {
+//    id 'java-library'
+//}
 
 
 android {
@@ -10,14 +16,14 @@ android {
         targetSdkVersion 23
         versionCode 1
         versionName "1.0"
-
-        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
-
     }
 
     buildTypes {
         release {
-            minifyEnabled false
+            // 混淆
+            minifyEnabled true
+            // Zipalign优化
+            zipAlignEnabled true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
@@ -29,6 +35,24 @@ dependencies {
     implementation 'com.android.support:support-annotations:23.0.0'
 }
 
-//---------上传到jcenter
-apply from: './install.gradle'
-apply from: './bintray.gradle'
+Task exportJarTask = project.task('exportJarTask') {
+    doLast {
+        println("start copy class.jar into Dir:app/lib")
+        project.copy {
+            delete("../app/libs/umbrella.jar")
+            from('./build/intermediates/aar_main_jar/release/classes.jar')
+            into('../app/libs')
+            rename { fileName ->
+                println("rename file $fileName")
+                fileName.replace("classes.jar", "umbrella.jar")
+            }
+        }
+    }
+}
+
+project.tasks.whenTaskAdded { Task theTask ->
+    if (theTask.name == 'assembleRelease') {
+        // 编译完之后再执行自定义task
+        theTask.dependsOn(exportJarTask)
+    }
+}
