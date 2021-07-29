@@ -1,0 +1,30 @@
+apply plugin: "maven"
+//apply plugin: 'com.github.dcendents.android-maven'
+apply from: './maven.data.gradle'
+// 指定编码
+tasks.withType(JavaCompile) {
+    options.encoding = "UTF-8"
+}
+
+//指定生成的javadoc文档编码格式，防止javadoc中文乱码
+tasks.withType(Javadoc) {
+    options {
+        encoding "UTF-8"
+        charSet 'UTF-8'
+        links "http://docs.oracle.com/javase/8/docs/api"
+    }
+}
+
+group = publishedGroupId
+version libraryVersion
+sourceCompatibility = 1.8 // java 8
+targetCompatibility = 1.8
+
+repositories {
+    mavenCentral()
+}
+
+
+artifacts {
+    file('./build/intermediates/aar_main_jar/release/classes.jar')
+}

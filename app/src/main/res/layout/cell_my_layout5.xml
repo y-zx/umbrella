@@ -3,40 +3,31 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:paddingBottom="4dp"
     android:orientation="vertical">
 
     <View
         android:layout_width="0dp"
-        android:layout_height="56dp"
+        android:layout_height="0dp"
         android:layout_marginLeft="4dp"
         android:layout_marginRight="4dp"
         android:background="#f5f5f5"
-        app:layout_constraintBottom_toBottomOf="@+id/book_image"
+        app:layout_constraintBottom_toBottomOf="@+id/book_title"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/book_image" />
-
-    <ImageView
-        android:id="@+id/book_image"
-        android:layout_width="42dp"
-        android:layout_height="42dp"
-        android:layout_marginLeft="7dp"
-        android:layout_marginTop="11dp"
-        android:layout_marginBottom="11dp"
-        android:src="@mipmap/ic_launcher"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="@+id/book_title" />
 
     <TextView
         android:id="@+id/book_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="现代言情"
-        app:layout_constraintBottom_toBottomOf="@+id/book_image"
-        app:layout_constraintStart_toEndOf="@+id/book_image"
-        app:layout_constraintTop_toTopOf="@+id/book_image" />
-
+        android:layout_marginTop="4dp"
+        android:paddingTop="14dp"
+        android:paddingBottom="14dp"
+        android:text="系统空间"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/book_tag"
@@ -44,10 +35,8 @@
         android:layout_height="wrap_content"
         android:layout_margin="4dp"
         android:background="#ff0000"
-        android:paddingLeft="4dp"
-        android:paddingTop="2dp"
-        android:paddingRight="4dp"
-        android:paddingBottom="2dp"
+        android:padding="4dp"
+        android:text="现代言情"
         android:textColor="@android:color/white"
         android:textSize="10sp"
         app:layout_constraintEnd_toEndOf="parent"

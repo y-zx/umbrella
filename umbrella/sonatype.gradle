@@ -1,0 +1,30 @@
+//上传到mavenCentral
+apply from: './maven.data.gradle'
+
+Properties properties = new Properties()
+properties.load(project.rootProject.file('local.properties').newDataInputStream())
+
+artifacts {
+    archives file('./build/intermediates/aar_main_jar/release/classes.jar')
+}
+
+uploadArchives {
+    repositories {
+        mavenDeployer {
+            print "----uploadArchives"
+            //本地maven
+            repository(url: 'https://oss.sonatype.org/service/local/staging/deploy/maven2/') {
+                authentication(userName: properties.getProperty("sonatype.userName"),
+                        password: properties.getProperty("sonatype.pwd"))
+                pom.project {
+                    groupId publishedGroupId
+                    artifactId artifact
+                    version libraryVersion
+                    packaging packagingWay
+                }
+            }
+        }
+    }
+}
+
+uploadArchives.dependsOn(assemble)

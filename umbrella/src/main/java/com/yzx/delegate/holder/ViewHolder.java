@@ -43,6 +43,18 @@ public class ViewHolder extends RecyclerView.ViewHolder {
         return (E) view;
     }
 
+    public void onViewAttachedToWindow() {
+        if (getOnViewTachStatusListener() != null) {
+            getOnViewTachStatusListener().onViewAttachedToWindow();
+        }
+    }
+
+    public void onViewDetachedFromWindow() {
+        if (getOnViewTachStatusListener() != null) {
+            getOnViewTachStatusListener().onViewDetachedFromWindow();
+        }
+    }
+
     public ViewHolder setText(@IdRes int id, String charSequence) {
         TextView tv = getView(id);
         if (tv != null) {
@@ -109,5 +121,22 @@ public class ViewHolder extends RecyclerView.ViewHolder {
     @Override
     public String toString() {
         return super.toString();
+    }
+
+    private OnViewTachStatusListener onViewTachStatusListener;
+
+    public void setOnViewTachStatusListener(OnViewTachStatusListener onViewTachStatusListener) {
+        this.onViewTachStatusListener = onViewTachStatusListener;
+    }
+
+    public OnViewTachStatusListener getOnViewTachStatusListener() {
+        return onViewTachStatusListener;
+    }
+
+    public interface OnViewTachStatusListener {
+
+        void onViewAttachedToWindow();
+
+        void onViewDetachedFromWindow();
     }
 }
