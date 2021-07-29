@@ -24,12 +24,9 @@ ext {
     
     /*
     每次发版修改版本号
-    shell terminal E:\workspace\recyclerAdapter> ./gradlew bintrayUpload
-    如果 出现 bash: gradlew: command not found
-    先执行
-    shell terminal E:\workspace\recyclerAdapter>  chmod +x gradlew
+    Task/upload/uploadArchives
     */
-    libraryVersion = '2.0.0'
+    libraryVersion = '2.0.1'
 
 
 }
