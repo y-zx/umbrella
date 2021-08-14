@@ -1,5 +1,7 @@
 package com.yzx.delegate.items;
 
+import androidx.annotation.NonNull;
+
 import com.yzx.delegate.holder.ViewHolder;
 
 /**
@@ -34,9 +36,9 @@ public abstract class FixItemT<T> extends DelegateItem {
     }
 
     @Override
-    public void convert(ViewHolder holder, int position, int positionAtTotal) {
+    public void convert(@NonNull ViewHolder holder, int position, int positionAtTotal) {
         convert(holder, position, positionAtTotal, t);
     }
 
-    protected abstract void convert(ViewHolder holder, int position, int positionAtTotal, T t);
+    protected abstract void convert(@NonNull ViewHolder holder, int position, int positionAtTotal, T t);
 }
