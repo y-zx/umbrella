@@ -2,6 +2,8 @@ package com.yzx.delegate.items;
 
 import android.content.Context;
 import androidx.annotation.LayoutRes;
+import androidx.annotation.NonNull;
+
 import android.util.SparseArray;
 
 import com.yzx.delegate.DelegateManager;
@@ -67,25 +69,25 @@ public class CommonMultipleItem<T> extends DelegateItem {
             return handleItem(data.get(position - getScopeStartPosition()));
         }
 
-        protected abstract void convert(ViewHolder holder, int position, int positionAtTotal, T t);
+        protected abstract void convert(@NonNull ViewHolder holder, int position, int positionAtTotal, T t);
 
-        protected void convert(ViewHolder holder, int position, int positionAtTotal) {
+        protected void convert(@NonNull ViewHolder holder, int position, int positionAtTotal) {
             convert(holder, position, positionAtTotal, data.get(position));
         }
     }
 
     public List<T> data = new ArrayList<>();
 
-    public SparseArray<CommonMultipleItem.MultipleChildItem> multipleChildren = new SparseArray<>();
+    public SparseArray<MultipleChildItem> multipleChildren = new SparseArray<>();
 
-    public <E extends CommonMultipleItem.MultipleChildItem> CommonMultipleItem<T> registerMultileChildItem(E e) {
+    public <E extends MultipleChildItem> CommonMultipleItem<T> registerMultipleChildItem(E e) {
 
         e.adapter = getAdapter();
         multipleChildren.put(e.getLayoutResId(), e);
         return this;
     }
 
-    public <E extends CommonMultipleItem.MultipleChildItem> CommonMultipleItem<T> unregisterMultipleChildItem(E e) {
+    public <E extends MultipleChildItem> CommonMultipleItem<T> unregisterMultipleChildItem(E e) {
 
         e.adapter = null;
         multipleChildren.remove(e.getLayoutResId());
@@ -122,7 +124,7 @@ public class CommonMultipleItem<T> extends DelegateItem {
     @Override
     public int getSpanSize(int position) {
         for (int i = 0; i < multipleChildren.size(); i++) {
-            CommonMultipleItem.MultipleChildItem item = multipleChildren.get(multipleChildren.keyAt(i));
+            MultipleChildItem item = multipleChildren.get(multipleChildren.keyAt(i));
             if (item.handleItem(position)) {
                 return item.getSpanSize();
             }
@@ -156,9 +158,9 @@ public class CommonMultipleItem<T> extends DelegateItem {
     }
 
     @Override
-    public void convert(ViewHolder holder, int position, int positionAtTotal) {
+    public void convert(@NonNull ViewHolder holder, int position, int positionAtTotal) {
         for (int i = 0; i < multipleChildren.size(); i++) {
-            CommonMultipleItem.MultipleChildItem item = multipleChildren.get(multipleChildren.keyAt(i));
+            MultipleChildItem item = multipleChildren.get(multipleChildren.keyAt(i));
             if (item.handleItem(positionAtTotal)) {
                 item.convert(holder, position, positionAtTotal);
             }

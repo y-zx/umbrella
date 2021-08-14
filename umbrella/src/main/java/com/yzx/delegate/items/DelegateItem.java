@@ -134,9 +134,9 @@ public abstract class DelegateItem {
      * @param relativePosition 相对于起始位置
      * @param absolutePosition 该item在Recycler中position
      */
-    public abstract void convert(ViewHolder holder, int relativePosition, int absolutePosition);
+    public abstract void convert(@NonNull ViewHolder holder, int relativePosition, int absolutePosition);
 
-    public void convert(ViewHolder holder, int absolutePosition){
+    public void convert(@NonNull ViewHolder holder, int absolutePosition){
         convert(holder, absolutePosition - scopeStartPosition, absolutePosition);
     }
 

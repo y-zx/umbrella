@@ -2,6 +2,8 @@ package com.yzx.delegate.items;
 
 import android.view.View;
 
+import androidx.annotation.NonNull;
+
 import com.yzx.delegate.holder.ViewHolder;
 
 /**
@@ -34,12 +36,12 @@ public abstract class FooterItem extends DelegateItem {
     }
 
     @Override
-    public void convert(ViewHolder holder, int relativePosition, int positionAtTotal) {
+    public void convert(@NonNull ViewHolder holder, int relativePosition, int positionAtTotal) {
         this.holder = holder;
         convert(holder);
     }
 
-    protected abstract void convert(ViewHolder holder);
+    protected abstract void convert(@NonNull ViewHolder holder);
 
     public FooterStatusChangedListener setFooterStatusChangedListener() {
         return null;
@@ -100,12 +102,12 @@ public abstract class FooterItem extends DelegateItem {
 
     public interface FooterStatusChangedListener {
 
-        void loadComplete(ViewHolder holder);
+        void loadComplete(@NonNull ViewHolder holder);
 
-        void loading(ViewHolder holder);
+        void loading(@NonNull ViewHolder holder);
 
-        void loadError(ViewHolder holder);
+        void loadError(@NonNull ViewHolder holder);
 
-        void noMore(ViewHolder holder);
+        void noMore(@NonNull ViewHolder holder);
     }
 }

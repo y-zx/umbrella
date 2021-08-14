@@ -77,7 +77,7 @@ public class DelegateManager {
         }
     }
 
-    public void onBindViewHolder(ViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         if (holder.getTag() != null) {
             DelegateItem item = (DelegateItem) holder.getTag();
             item.convert(holder, position);
