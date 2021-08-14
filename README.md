@@ -1,7 +1,11 @@
 # RecyclerDelegateAdapter
 RecyclerView 代理适配器
 
+          迁移 androidX 前
           gradle库依赖： implementation 'com.github.y-zx:umbrella:2.0.1'
+
+          迁移 androidX 后
+          gradle库依赖： implementation 'com.github.y-zx:umbrella:3.0.0'
 
 use sample:
 

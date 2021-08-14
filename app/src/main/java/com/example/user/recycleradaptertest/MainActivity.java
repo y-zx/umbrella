@@ -1,23 +1,16 @@
 package com.example.user.recycleradaptertest;
 
 import android.os.Bundle;
-import android.support.annotation.IdRes;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.RecyclerView;
-import android.text.TextUtils;
+import androidx.annotation.IdRes;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 import android.view.View;
 
-import com.example.user.recycleradaptertest.bean.MainBean;
 import com.yzx.delegate.RecyclerDelegateAdapter;
-import com.yzx.delegate.holder.ViewHolder;
-import com.yzx.delegate.items.CommonItem;
-import com.yzx.delegate.items.CommonMultipleItem;
-import com.yzx.delegate.items.FixItem;
-import com.yzx.delegate.items.FooterItem;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {

@@ -1,9 +1,9 @@
 package com.yzx.delegate.items;
 
 import android.content.Context;
-import android.support.annotation.IntRange;
-import android.support.annotation.LayoutRes;
-import android.support.annotation.NonNull;
+import androidx.annotation.IntRange;
+import androidx.annotation.LayoutRes;
+import androidx.annotation.NonNull;
 
 import com.yzx.delegate.RecyclerDelegateAdapter;
 import com.yzx.delegate.holder.ViewHolder;
