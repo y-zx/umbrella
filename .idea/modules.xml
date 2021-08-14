@@ -2,9 +2,9 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/RecyclerDelegateAdapter.iml" filepath="$PROJECT_DIR$/.idea/modules/RecyclerDelegateAdapter.iml" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/RecyclerDelegateAdapter.app.iml" filepath="$PROJECT_DIR$/.idea/modules/app/RecyclerDelegateAdapter.app.iml" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/umbrella/RecyclerDelegateAdapter.umbrella.iml" filepath="$PROJECT_DIR$/.idea/modules/umbrella/RecyclerDelegateAdapter.umbrella.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/umbrella.iml" filepath="$PROJECT_DIR$/.idea/modules/umbrella.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/umbrella.app.iml" filepath="$PROJECT_DIR$/.idea/modules/app/umbrella.app.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/umbrella/umbrella.umbrella.iml" filepath="$PROJECT_DIR$/.idea/modules/umbrella/umbrella.umbrella.iml" />
     </modules>
   </component>
 </project>

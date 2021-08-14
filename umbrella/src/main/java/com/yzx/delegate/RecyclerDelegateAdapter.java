@@ -1,17 +1,15 @@
 package com.yzx.delegate;
 
 import android.content.Context;
-import android.support.annotation.IntRange;
-import android.support.annotation.NonNull;
-import android.support.v7.widget.RecyclerView;
+import androidx.annotation.IntRange;
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 
 import com.yzx.delegate.holder.ViewHolder;
 import com.yzx.delegate.items.DelegateItem;
 import com.yzx.delegate.items.FooterItem;
-
-import java.util.LinkedHashMap;
 
 /**
  * @Author: yangzhenxiang

@@ -8,8 +8,8 @@ apply from: 'jitpack.gradle'
 
 
 android {
-    compileSdkVersion 23
-    buildToolsVersion '26.0.2'
+    compileSdkVersion 28
+    buildToolsVersion '28.0.2'
 
     defaultConfig {
         minSdkVersion 16
@@ -31,28 +31,19 @@ android {
 }
 
 dependencies {
-    implementation 'com.android.support:recyclerview-v7:23.0.0'
-    implementation 'com.android.support:support-annotations:23.0.0'
+    implementation 'androidx.recyclerview:recyclerview:1.0.0'
+    implementation 'androidx.annotation:annotation:1.0.0'
 }
 
-Task exportJarTask = project.task('exportJarTask') {
-    doLast {
-        println("start copy class.jar into Dir:app/lib")
-        project.copy {
-            delete("../app/libs/umbrella.jar")
-            from('./build/intermediates/aar_main_jar/release/classes.jar')
-            into('../app/libs')
-            rename { fileName ->
-                println("rename file $fileName")
-                fileName.replace("classes.jar", "umbrella.jar")
-            }
+project.tasks.getByName('assemble').doLast {
+    println("start copy class.jar into Dir:app/lib")
+    project.copy {
+        delete("../app/libs/umbrella.jar")
+        from('./build/intermediates/aar_main_jar/release/classes.jar')
+        into('../app/libs')
+        rename { fileName ->
+            println("rename file $fileName")
+            fileName.replace("classes.jar", "umbrella.jar")
         }
-    }
-}
-
-project.tasks.whenTaskAdded { Task theTask ->
-    if (theTask.name == 'assembleRelease') {
-        // 编译完之后再执行自定义task
-        theTask.dependsOn(exportJarTask)
     }
 }
