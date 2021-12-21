@@ -1,14 +1,21 @@
 package com.example.user.recycleradaptertest;
 
 import android.os.Bundle;
+
 import androidx.annotation.IdRes;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.View;
 
 import com.yzx.delegate.RecyclerDelegateAdapter;
+import com.yzx.delegate.layoutmanager.LayoutHelper;
+import com.yzx.delegate.layoutmanager.PositionLayoutHelperFinder;
+import com.yzx.delegate.layoutmanager.VirtualLayoutManager;
+import com.yzx.delegate.layoutmanager.layout.GridLayoutHelper;
+import com.yzx.delegate.layoutmanager.layout.LinearLayoutHelper;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -37,15 +44,19 @@ public class MainActivity extends AppCompatActivity {
 
         //初始化recyclerView
         recyclerView = $(R.id.recycler);
-        GridLayoutManager manager = new GridLayoutManager(this, 2);
-        GridLayoutManager.SpanSizeLookup lookup = new GridLayoutManager.SpanSizeLookup() {
+
+
+        VirtualLayoutManager layoutManager = new VirtualLayoutManager(recyclerView.getContext());
+        recyclerView.setLayoutManager(layoutManager);
+        PositionLayoutHelperFinder layoutHelperFinder = new PositionLayoutHelperFinder();
+        layoutHelperFinder.setFinderListener(new PositionLayoutHelperFinder.LayoutHelperFinderListener() {
             @Override
-            public int getSpanSize(int position) {
-                return adapter.getSpanSize(position);
+            public int getLayoutHelper(int position) {
+                return adapter.findLayoutHelperByPosition(position);
             }
-        };
-        manager.setSpanSizeLookup(lookup);
-        recyclerView.setLayoutManager(manager);
+        });
+        layoutManager.setHelperFinder(layoutHelperFinder);
+
         adapter = new RecyclerDelegateAdapter(this);
         recyclerView.setAdapter(adapter);
 
@@ -53,7 +64,7 @@ public class MainActivity extends AppCompatActivity {
         mutiItemDataSource.addAll(viewModel.getData());
 
         // 初始化adapter与设置数据
-        MainAdapter.initMainAdapter(adapter, titles, mutiItemDataSource);
+        MainAdapter.initMainAdapter(adapter, titles, mutiItemDataSource, layoutManager);
     }
 
 }

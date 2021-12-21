@@ -1,11 +1,11 @@
 package com.yzx.delegate;
 
 import android.content.Context;
-import androidx.annotation.IntRange;
-import androidx.annotation.NonNull;
-import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
+
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.yzx.delegate.holder.ViewHolder;
 import com.yzx.delegate.items.DelegateItem;
@@ -15,7 +15,7 @@ import com.yzx.delegate.items.FooterItem;
  * @Author: yangzhenxiang
  * @Time: 2018/5/8
  * @Description: recyclerView 代理适配器，实现复杂多Item，注意：每个不同的item 的布局资源文件 必须唯一
- *              v2.0.0 开始支持GridLayoutManager的SpanSize。
+ * v2.0.0 开始支持GridLayoutManager的SpanSize。
  * @E-mail: yzxandroid981@163.com
  */
 
@@ -74,7 +74,7 @@ public class RecyclerDelegateAdapter extends RecyclerView.Adapter<ViewHolder> {
     }
 
     public <M extends DelegateItem> RecyclerDelegateAdapter registerItem(@NonNull M m) {
-        if (m.getLayoutResId() == 0){
+        if (m.getLayoutResId() == 0) {
             throw new IllegalArgumentException("DelegateItem's layout resource can't be null");
         }
         m.setAdapter(this);
@@ -83,7 +83,7 @@ public class RecyclerDelegateAdapter extends RecyclerView.Adapter<ViewHolder> {
     }
 
     public <M extends DelegateItem> RecyclerDelegateAdapter registerItem(@NonNull M m, int location) {
-        if (m.getLayoutResId() == 0){
+        if (m.getLayoutResId() == 0) {
             throw new IllegalArgumentException("DelegateItem's layout resource can't be null");
         }
         m.setAdapter(this);
@@ -149,8 +149,12 @@ public class RecyclerDelegateAdapter extends RecyclerView.Adapter<ViewHolder> {
         return 0;
     }
 
-    public int getSpanSize(int position){
+    public int getSpanSize(int position) {
         return delegateManager.getSpanSize(position);
+    }
+
+    public int findLayoutHelperByPosition(int position) {
+        return delegateManager.findLayoutHelperByPosition(position);
     }
 
 }

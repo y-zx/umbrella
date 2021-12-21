@@ -20,3 +20,6 @@
 # hide the original source file name.
 #-renamesourcefileattribute SourceFile
 -keep class com.yzx.delegate.** {*;}
+
+-keepattributes InnerClasses
+-keep class com.yzx.delegate.layoutmanager.ExposeLinearLayoutManagerEx { *; }

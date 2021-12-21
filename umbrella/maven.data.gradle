@@ -26,7 +26,7 @@ ext {
     每次发版修改版本号
     Task/upload/uploadArchives
     */
-    libraryVersion = '3.0.0'
+    libraryVersion = '4.0.0'
 
 
 }

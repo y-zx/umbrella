@@ -4,6 +4,8 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.example.user.recycleradaptertest.bean.MainBean;
 import com.yzx.delegate.RecyclerDelegateAdapter;
 import com.yzx.delegate.holder.ViewHolder;
@@ -11,7 +13,13 @@ import com.yzx.delegate.items.CommonItem;
 import com.yzx.delegate.items.CommonMultipleItem;
 import com.yzx.delegate.items.FixItem;
 import com.yzx.delegate.items.FooterItem;
+import com.yzx.delegate.layoutmanager.LayoutHelper;
+import com.yzx.delegate.layoutmanager.PositionLayoutHelperFinder;
+import com.yzx.delegate.layoutmanager.VirtualLayoutManager;
+import com.yzx.delegate.layoutmanager.layout.GridLayoutHelper;
+import com.yzx.delegate.layoutmanager.layout.LinearLayoutHelper;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -23,7 +31,16 @@ import java.util.List;
  */
 public class MainAdapter {
 
-    public static void initMainAdapter(RecyclerDelegateAdapter adapter, String[] titles, List<Object> mutiItemDataSource) {
+    public static void initMainAdapter(final RecyclerDelegateAdapter adapter, String[] titles, List<Object> mutiItemDataSource, VirtualLayoutManager layoutManager) {
+
+
+        List<LayoutHelper> layoutHelpers = new ArrayList<>();
+        final LinearLayoutHelper linearLayoutHelper = new LinearLayoutHelper();
+        final GridLayoutHelper gridLayoutHelper = new GridLayoutHelper(2);
+
+        layoutHelpers.add(linearLayoutHelper);
+        layoutHelpers.add(gridLayoutHelper);
+        layoutManager.setLayoutHelpers(layoutHelpers);
 
         //item的个数 随数据源而定，布局为一种
         CommonItem<String> commonItem = new CommonItem<String>(R.layout.cell_main_recycler_item2, 2) {
@@ -41,6 +58,11 @@ public class MainAdapter {
                         Log.d("MainAdapter", "onViewDetachedFromWindow" + position);
                     }
                 });
+            }
+
+            @Override
+            public int findLayoutHelperByPosition(int i) {
+                return gridLayoutHelper.hashCode();
             }
         };
         commonItem.setData(Arrays.asList(titles));
@@ -74,6 +96,12 @@ public class MainAdapter {
                 }
 
             }
+
+            @Override
+            public int findLayoutHelperByPosition(int i) {
+                return gridLayoutHelper.hashCode();
+            }
+
         }).registerMultileChildItem(commonMultipleItem.new MultipleChildItem(R.layout.cell_my_layout5, 1) {
             @Override
             protected boolean handleItem(Object object) {
@@ -101,6 +129,11 @@ public class MainAdapter {
                             book.lastOne ? getContext().getResources().getDimensionPixelOffset(R.dimen.dp_12) :
                                     getContext().getResources().getDimensionPixelOffset(R.dimen.dp_4));
                 }
+            }
+
+            @Override
+            public int findLayoutHelperByPosition(int i) {
+                return gridLayoutHelper.hashCode();
             }
         }).registerMultileChildItem(commonMultipleItem.new MultipleChildItem(R.layout.cell_my_layout4, 2) {
             @Override

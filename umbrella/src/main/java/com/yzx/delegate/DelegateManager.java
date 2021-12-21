@@ -1,11 +1,12 @@
 package com.yzx.delegate;
 
 import android.content.Context;
-import androidx.annotation.NonNull;
 import android.util.SparseArray;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
+import androidx.annotation.NonNull;
 
 import com.yzx.delegate.holder.ViewHolder;
 import com.yzx.delegate.items.CommonMultipleItem;
@@ -210,5 +211,15 @@ public class DelegateManager {
         }
         //默认返回1
         return 1;
+    }
+
+    public int findLayoutHelperByPosition(int position) {
+        for (Integer integer : getStatusHandleItems().keySet()) {
+            DelegateItem item = getStatusHandleItems().get(integer);
+            if (item.handleItem(position)) {
+                return item.findLayoutHelperByPosition(position);
+            }
+        }
+        return 0;
     }
 }

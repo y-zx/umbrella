@@ -1,8 +1,9 @@
 package com.yzx.delegate.items;
 
 import android.content.Context;
-import androidx.annotation.LayoutRes;
 import android.util.SparseArray;
+
+import androidx.annotation.LayoutRes;
 
 import com.yzx.delegate.DelegateManager;
 import com.yzx.delegate.RecyclerDelegateAdapter;
@@ -72,6 +73,10 @@ public class CommonMultipleItem<T> extends DelegateItem {
         protected void convert(ViewHolder holder, int position, int positionAtTotal) {
             convert(holder, position, positionAtTotal, data.get(position));
         }
+
+        public int findLayoutHelperByPosition(int position) {
+            return 0;
+        }
     }
 
     public List<T> data = new ArrayList<>();
@@ -130,6 +135,16 @@ public class CommonMultipleItem<T> extends DelegateItem {
         return 1;
     }
 
+    @Override
+    public int findLayoutHelperByPosition(int position) {
+        for (int i = 0; i < multipleChildren.size(); i++) {
+            CommonMultipleItem.MultipleChildItem item = multipleChildren.get(multipleChildren.keyAt(i));
+            if (item.handleItem(position)) {
+                return item.findLayoutHelperByPosition(position);
+            }
+        }
+        return 0;
+    }
 
     public void setData(List<T> data) {
         if (data != null) {
