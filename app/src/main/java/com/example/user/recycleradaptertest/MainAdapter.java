@@ -33,21 +33,27 @@ public class MainAdapter {
                 holder.setOnViewTachStatusListener(new ViewHolder.OnViewTachStatusListener() {
                     @Override
                     public void onViewAttachedToWindow() {
-                        Log.d("MainAdapter", "onViewAttachedToWindow" + position);
+
                     }
 
                     @Override
                     public void onViewDetachedFromWindow() {
-                        Log.d("MainAdapter", "onViewDetachedFromWindow" + position);
+
                     }
                 });
+            }
+
+            @Override
+            public long getItemId(int i) {
+                Log.d("MainAdapter", "item2 getItemId = " + (100 + i));
+                return 100 + i;
             }
         };
         commonItem.setData(Arrays.asList(titles));
 
         //item 的个数 随数据源而定，布局为多种
         CommonMultipleItem<Object> commonMultipleItem = new CommonMultipleItem<>();
-        commonMultipleItem.registerMultileChildItem(commonMultipleItem.new MultipleChildItem(R.layout.cell_my_layout, 1) {
+        commonMultipleItem.registerMultipleChildItem(commonMultipleItem.new MultipleChildItem(R.layout.cell_my_layout, 1) {
             @Override
             protected boolean handleItem(Object object) {
                 return object instanceof MainBean.Book && "1".equals(((MainBean.Book) object).section_type);
@@ -74,7 +80,12 @@ public class MainAdapter {
                 }
 
             }
-        }).registerMultileChildItem(commonMultipleItem.new MultipleChildItem(R.layout.cell_my_layout5, 1) {
+
+            @Override
+            public long getItemId(int i) {
+                return 200 + i;
+            }
+        }).registerMultipleChildItem(commonMultipleItem.new MultipleChildItem(R.layout.cell_my_layout5, 1) {
             @Override
             protected boolean handleItem(Object object) {
                 return object instanceof MainBean.Book && "2".equals(((MainBean.Book) object).section_type);
@@ -102,7 +113,13 @@ public class MainAdapter {
                                     getContext().getResources().getDimensionPixelOffset(R.dimen.dp_4));
                 }
             }
-        }).registerMultileChildItem(commonMultipleItem.new MultipleChildItem(R.layout.cell_my_layout4, 2) {
+
+            @Override
+            public long getItemId(int i) {
+                Log.d("MainAdapter", "my_layout5 getItemId = " + (300 + i));
+                return 300 + i;
+            }
+        }).registerMultipleChildItem(commonMultipleItem.new MultipleChildItem(R.layout.cell_my_layout4, 2) {
             @Override
             protected boolean handleItem(Object object) {
                 return object instanceof MainBean.SectionTitle;
@@ -113,6 +130,12 @@ public class MainAdapter {
                 MainBean.SectionTitle title = (MainBean.SectionTitle) object;
                 holder.setText(R.id.section_title, title.title);
             }
+
+            @Override
+            public long getItemId(int i) {
+                Log.d("MainAdapter", "my_layout4 getItemId = " + (400 + i));
+                return 400 + i;
+            }
         });
         commonMultipleItem.setData(mutiItemDataSource);
 
@@ -122,6 +145,12 @@ public class MainAdapter {
 
             @Override
             protected void convert(ViewHolder holder) {
+            }
+
+            @Override
+            public long getItemId(int i) {
+                Log.d("MainAdapter", "footer getItemId = " + (500 + i));
+                return 500 + i;
             }
 
             @Override

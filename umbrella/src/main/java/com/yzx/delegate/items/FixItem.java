@@ -11,7 +11,7 @@ import com.yzx.delegate.holder.ViewHolder;
  * @E-mail: yzxandroid981@163.com
  */
 
-public class FixItem  extends DelegateItem {
+public class FixItem extends DelegateItem {
 
     public FixItem(int layoutResId) {
         this(layoutResId, 0);

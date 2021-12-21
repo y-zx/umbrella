@@ -1,16 +1,16 @@
 package com.yzx.delegate;
 
 import android.content.Context;
-import androidx.annotation.NonNull;
 import android.util.SparseArray;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import androidx.annotation.NonNull;
+
 import com.yzx.delegate.holder.ViewHolder;
 import com.yzx.delegate.items.CommonMultipleItem;
 import com.yzx.delegate.items.DelegateItem;
-import com.yzx.delegate.items.FooterItem;
 
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
@@ -32,8 +32,6 @@ public class DelegateManager {
     private SparseArray<DelegateItem> delegateArray;
 
     private LinkedHashMap<Integer, DelegateItem> statusHandleItems;
-
-    private int footerResId;
 
     public DelegateManager(Context ctx, LayoutInflater inflater) {
         context = ctx;
@@ -104,20 +102,32 @@ public class DelegateManager {
         return count;
     }
 
-
-    public int getFooterResId() {
-        return footerResId;
+    public long getItemId(int position) {
+        for (Integer integer : getStatusHandleItems().keySet()) {
+            DelegateItem item = getStatusHandleItems().get(integer);
+            if (item.handleItem(position)) {
+                return item.getItemId(position);
+            }
+        }
+        return position;
     }
 
-    public DelegateItem getCurrentFooterItem() {
-        return getStatusHandleItems().get(getFooterResId());
+    /**
+     * 2.0.0 新功能，支持GridLayoutManager
+     */
+    public int getSpanSize(int position) {
+        for (Integer integer : getStatusHandleItems().keySet()) {
+            DelegateItem item = getStatusHandleItems().get(integer);
+            if (item.handleItem(position)) {
+                return item.getSpanSize(position);
+            }
+        }
+        //默认返回1
+        return 1;
     }
 
     public <M extends DelegateItem> void registerItem(@NonNull M m) {
         m.setContext(context);
-        if (m instanceof FooterItem) {
-            footerResId = m.getLayoutResId();
-        }
         if (m instanceof CommonMultipleItem) {
             CommonMultipleItem item = (CommonMultipleItem) m;
             int size = item.multipleChildren.size();
@@ -132,9 +142,6 @@ public class DelegateManager {
     }
 
     public <M extends DelegateItem> void registerItem(@NonNull M m, int location) {
-        if (m instanceof FooterItem) {
-            footerResId = m.getLayoutResId();
-        }
         if (m instanceof CommonMultipleItem) {
             CommonMultipleItem item = (CommonMultipleItem) m;
             int size = item.multipleChildren.size();
@@ -164,9 +171,6 @@ public class DelegateManager {
     public <M extends DelegateItem> void unregisterItem(@NonNull M m) {
         m.setAdapter(null);
         m.setContext(null);
-        if (m instanceof FooterItem) {
-            footerResId = -1;
-        }
         if (m instanceof CommonMultipleItem) {
             CommonMultipleItem item = (CommonMultipleItem) m;
             int size = item.multipleChildren.size();
@@ -182,9 +186,6 @@ public class DelegateManager {
     public <M extends DelegateItem> void unregisterItem(@NonNull M m, int statusValue) {
         m.setAdapter(null);
         m.setContext(null);
-        if (m instanceof FooterItem) {
-            footerResId = -1;
-        }
         if (m instanceof CommonMultipleItem) {
             CommonMultipleItem item = (CommonMultipleItem) m;
             int size = item.multipleChildren.size();
@@ -195,20 +196,5 @@ public class DelegateManager {
             }
         }
         getStatusHandleItems().remove(m.getLayoutResId());
-
-    }
-
-    /**
-     * 2.0.0 新功能，支持GridLayoutManager
-     */
-    public int getSpanSize(int position) {
-        for (Integer integer : getStatusHandleItems().keySet()) {
-            DelegateItem item = getStatusHandleItems().get(integer);
-            if (item.handleItem(position)) {
-                return item.getSpanSize(position);
-            }
-        }
-        //默认返回1
-        return 1;
     }
 }

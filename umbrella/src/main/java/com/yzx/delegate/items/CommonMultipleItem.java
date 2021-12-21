@@ -1,10 +1,10 @@
 package com.yzx.delegate.items;
 
 import android.content.Context;
+import android.util.SparseArray;
+
 import androidx.annotation.LayoutRes;
 import androidx.annotation.NonNull;
-
-import android.util.SparseArray;
 
 import com.yzx.delegate.DelegateManager;
 import com.yzx.delegate.RecyclerDelegateAdapter;
@@ -40,6 +40,10 @@ public class CommonMultipleItem<T> extends DelegateItem {
 
         protected int getLayoutResId() {
             return layoutResId;
+        }
+
+        public long getItemId(int position) {
+            return position;
         }
 
         public int getSpanSize() {
@@ -114,6 +118,16 @@ public class CommonMultipleItem<T> extends DelegateItem {
             }
         }
         return DelegateManager.NO_LAYOUT_RESOURCE_FLAG;
+    }
+
+    @Override
+    public long getItemId(int position) {
+        for (int i = 0; i < multipleChildren.size(); i++) {
+            if (multipleChildren.get(multipleChildren.keyAt(i)).handleItem(position)) {
+                return multipleChildren.get(multipleChildren.keyAt(i)).getItemId(position);
+            }
+        }
+        return super.getItemId(position);
     }
 
     @Override

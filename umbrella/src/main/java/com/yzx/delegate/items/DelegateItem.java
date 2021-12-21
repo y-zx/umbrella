@@ -1,6 +1,7 @@
 package com.yzx.delegate.items;
 
 import android.content.Context;
+
 import androidx.annotation.IntRange;
 import androidx.annotation.LayoutRes;
 import androidx.annotation.NonNull;
@@ -40,7 +41,7 @@ public abstract class DelegateItem {
     }
 
     public DelegateItem(@LayoutRes int layoutResId, int count) {
-       this(layoutResId, count, 1);
+        this(layoutResId, count, 1);
     }
 
     public DelegateItem(@LayoutRes int layoutResId, int count, int spanSize) {
@@ -92,9 +93,14 @@ public abstract class DelegateItem {
     public int getLayoutResId() {
         return layoutResId;
     }
+
     //item layout资源
     public int getLayoutResId(int position) {
         return layoutResId;
+    }
+
+    public long getItemId(int position) {
+        return position;
     }
 
     /***RecyclerDelegateAdapter中调用判断是否处理对应position**/
@@ -130,13 +136,13 @@ public abstract class DelegateItem {
     /**
      * 数据绑定，界面处理
      *
-     * @param holder ViewHolder  所有View 在holder中通过id获取
+     * @param holder           ViewHolder  所有View 在holder中通过id获取
      * @param relativePosition 相对于起始位置
      * @param absolutePosition 该item在Recycler中position
      */
     public abstract void convert(@NonNull ViewHolder holder, int relativePosition, int absolutePosition);
 
-    public void convert(@NonNull ViewHolder holder, int absolutePosition){
+    public void convert(@NonNull ViewHolder holder, int absolutePosition) {
         convert(holder, absolutePosition - scopeStartPosition, absolutePosition);
     }
 
