@@ -11,7 +11,7 @@ import com.yzx.delegate.holder.ViewHolder;
  * @E-mail: yzxandroid981@163.com
  */
 
-public class FixItem extends DelegateItem {
+public class FixItem extends DelegateItem<Void> {
 
     public FixItem(int layoutResId) {
         this(layoutResId, 0);
@@ -29,4 +29,16 @@ public class FixItem extends DelegateItem {
     public void convert(@NonNull ViewHolder holder, int position, int positionAtTotal) {
 
     }
+
+    @Override
+    public Void getItem(int position) {
+        return null;
+    }
+
+    @Override
+    public void setCount(int count) {
+        super.setCount(count);
+        getAdapter().submitList();
+    }
+
 }

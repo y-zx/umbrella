@@ -9,6 +9,10 @@ import androidx.annotation.NonNull;
 import com.yzx.delegate.RecyclerDelegateAdapter;
 import com.yzx.delegate.holder.ViewHolder;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
+
 /**
  * @Author: yangzhenxiang
  * @Time: 2018/5/8
@@ -16,8 +20,9 @@ import com.yzx.delegate.holder.ViewHolder;
  * @E-mail: yzxandroid981@163.com
  */
 
-public abstract class DelegateItem {
+public abstract class DelegateItem<T> {
 
+    protected String className;
     private RecyclerDelegateAdapter adapter;
     private int count;
     private int scopeStartPosition;
@@ -48,6 +53,7 @@ public abstract class DelegateItem {
         this.layoutResId = layoutResId;
         this.count = count;
         this.spanSize = spanSize;
+        this.className = getClass().getName();
     }
 
     /****数据改变，adapter刷新****/
@@ -148,5 +154,51 @@ public abstract class DelegateItem {
 
     public Context getContext() {
         return context;
+    }
+
+    private List<DelegateItem.DiffBean> dataList;
+
+    protected List<DelegateItem.DiffBean> getDataList() {
+        if (dataList == null) {
+            dataList = new ArrayList<>();
+        }
+        return dataList;
+    }
+
+    public DelegateItem.DiffBean newInstanceDiffBean(int position, Object tag) {
+        DiffBean diffBean = new DiffBean();
+        diffBean.layoutResId = getLayoutResId(position);
+        diffBean.position = position;
+        diffBean.tag = tag;
+        return diffBean;
+    }
+
+    public List<DelegateItem.DiffBean> getItemList() {
+        getDataList().clear();
+        for (int i = 0; i < getCount(); i++) {
+            getDataList().add(newInstanceDiffBean(getScopeStartPosition() + i, getItem(i)));
+        }
+        return getDataList();
+    }
+
+    protected abstract T getItem(int position);
+
+    public static class DiffBean {
+        public int layoutResId;
+        public int position;
+        public Object tag;
+
+        public boolean areItemsTheSame(DelegateItem.DiffBean newItem) {
+            return newItem!=null && layoutResId == newItem.layoutResId;
+        }
+
+        public boolean areContentsTheSame(DelegateItem.DiffBean newItem) {
+            return newItem!=null && Objects.equals(tag, newItem.tag);
+        }
+
+        @Override
+        public int hashCode() {
+            return Objects.hash(layoutResId, tag);
+        }
     }
 }

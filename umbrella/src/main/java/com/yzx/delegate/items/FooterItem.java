@@ -13,7 +13,7 @@ import com.yzx.delegate.holder.ViewHolder;
  * @E-mail: yzxandroid981@163.com
  */
 
-public abstract class FooterItem extends DelegateItem {
+public abstract class FooterItem extends DelegateItem<Void> {
 
     public static final int FOOTER_STATUS_LOADING_COMPLETE = 1;
     public static final int FOOTER_STATUS_LOADING = 2;
@@ -32,6 +32,17 @@ public abstract class FooterItem extends DelegateItem {
     public FooterItem(int layoutResId, int spanSize) {
         super(layoutResId, 1, spanSize);
         listener = setFooterStatusChangedListener();
+    }
+
+    @Override
+    public void setCount(int count) {
+        super.setCount(count);
+        getAdapter().submitList();
+    }
+
+    @Override
+    protected Void getItem(int position) {
+        return null;
     }
 
     @Override

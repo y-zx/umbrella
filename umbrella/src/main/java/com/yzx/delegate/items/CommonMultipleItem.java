@@ -20,7 +20,7 @@ import java.util.List;
  * @E-mail: yzxandroid981@163.com
  */
 
-public class CommonMultipleItem<T> extends DelegateItem {
+public class CommonMultipleItem<T> extends DelegateItem<T> {
 
     public abstract class MultipleChildItem {
 
@@ -85,14 +85,12 @@ public class CommonMultipleItem<T> extends DelegateItem {
     public SparseArray<MultipleChildItem> multipleChildren = new SparseArray<>();
 
     public <E extends MultipleChildItem> CommonMultipleItem<T> registerMultipleChildItem(E e) {
-
         e.adapter = getAdapter();
         multipleChildren.put(e.getLayoutResId(), e);
         return this;
     }
 
     public <E extends MultipleChildItem> CommonMultipleItem<T> unregisterMultipleChildItem(E e) {
-
         e.adapter = null;
         multipleChildren.remove(e.getLayoutResId());
         return this;
@@ -153,22 +151,30 @@ public class CommonMultipleItem<T> extends DelegateItem {
         } else {
             this.data = new ArrayList<>();
         }
+        getAdapter().submitList();
     }
 
     public void addData(List<T> data) {
         if (data != null && data.size() > 0) {
             this.data.addAll(data);
         }
+        getAdapter().submitList();
     }
 
     public void addData(T data) {
         if (this.data != null && data != null) {
             this.data.add(data);
         }
+        getAdapter().submitList();
     }
 
     public List<T> getData() {
         return data;
+    }
+
+    @Override
+    protected T getItem(int position) {
+        return getData().get(position);
     }
 
     @Override

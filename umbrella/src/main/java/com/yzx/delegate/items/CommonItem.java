@@ -14,7 +14,7 @@ import java.util.List;
  * @E-mail: yzxandroid981@163.com
  */
 
-public abstract class CommonItem<T> extends DelegateItem {
+public abstract class CommonItem<T> extends DelegateItem<T> {
 
     public List<T> data = new ArrayList<>();
 
@@ -50,18 +50,24 @@ public abstract class CommonItem<T> extends DelegateItem {
         if (data != null && data.size() > 0) {
             this.data.addAll(data);
         }
+        getAdapter().submitList();
     }
 
     public void addData(T data) {
         if (this.data != null && data != null) {
             this.data.add(data);
         }
+        getAdapter().submitList();
     }
 
     public List<T> getData() {
         return data;
     }
 
+    @Override
+    protected T getItem(int position) {
+        return getData().get(position);
+    }
 
     @Override
     public void convert(@NonNull ViewHolder holder, int position, int positionAtTotal) {
@@ -69,4 +75,5 @@ public abstract class CommonItem<T> extends DelegateItem {
     }
 
     protected abstract void convert(@NonNull ViewHolder holder, int position, int positionAtTotal, T t);
+
 }

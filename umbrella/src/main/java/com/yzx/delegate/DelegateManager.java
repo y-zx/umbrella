@@ -102,9 +102,22 @@ public class DelegateManager {
         return count;
     }
 
+    private List<DelegateItem.DiffBean> itemList = new ArrayList<>();
+
+    public List<DelegateItem.DiffBean> getItemList() {
+        itemList.clear();
+        for (Integer integer : getStatusHandleItems().keySet()) {
+            List<DelegateItem.DiffBean> itemList = getStatusHandleItems().get(integer).getItemList();
+            if (itemList != null && itemList.size() > 0) {
+                this.itemList.addAll(itemList);
+            }
+        }
+        return itemList;
+    }
+
     public long getItemId(int position) {
         for (Integer integer : getStatusHandleItems().keySet()) {
-            DelegateItem item = getStatusHandleItems().get(integer);
+            DelegateItem<?> item = getStatusHandleItems().get(integer);
             if (item.handleItem(position)) {
                 return item.getItemId(position);
             }

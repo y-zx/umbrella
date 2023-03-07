@@ -11,7 +11,7 @@ import com.yzx.delegate.holder.ViewHolder;
  * @E-mail: yzxandroid981@163.com
  */
 
-public abstract class FixItemT<T> extends DelegateItem {
+public abstract class FixItemT<T> extends DelegateItem<T> {
 
     private T t;
 
@@ -36,9 +36,21 @@ public abstract class FixItemT<T> extends DelegateItem {
     }
 
     @Override
+    protected T getItem(int position) {
+        return getData();
+    }
+
+    @Override
+    public void setCount(int count) {
+        super.setCount(count);
+        getAdapter().submitList();
+    }
+
+    @Override
     public void convert(@NonNull ViewHolder holder, int position, int positionAtTotal) {
         convert(holder, position, positionAtTotal, t);
     }
 
     protected abstract void convert(@NonNull ViewHolder holder, int position, int positionAtTotal, T t);
+
 }
