@@ -40,11 +40,6 @@ public abstract class FixItemT<T> extends DelegateItem<T> {
         return getData();
     }
 
-    @Override
-    public void setCount(int count) {
-        super.setCount(count);
-        getAdapter().submitList();
-    }
 
     @Override
     public void convert(@NonNull ViewHolder holder, int position, int positionAtTotal) {

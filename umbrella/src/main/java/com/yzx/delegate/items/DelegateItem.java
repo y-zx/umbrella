@@ -90,6 +90,12 @@ public abstract class DelegateItem<T> {
         return adapter;
     }
 
+    public void submitList() {
+        if (getAdapter() != null) {
+            getAdapter().submitList();
+        }
+    }
+
     /****item layout相关****/
     //布局文件
     @LayoutRes
@@ -168,7 +174,6 @@ public abstract class DelegateItem<T> {
     public DelegateItem.DiffBean newInstanceDiffBean(int position, Object tag) {
         DiffBean diffBean = new DiffBean();
         diffBean.layoutResId = getLayoutResId(position);
-        diffBean.position = position;
         diffBean.tag = tag;
         return diffBean;
     }
@@ -185,15 +190,14 @@ public abstract class DelegateItem<T> {
 
     public static class DiffBean {
         public int layoutResId;
-        public int position;
         public Object tag;
 
         public boolean areItemsTheSame(DelegateItem.DiffBean newItem) {
-            return newItem!=null && layoutResId == newItem.layoutResId;
+            return newItem != null && layoutResId == newItem.layoutResId;
         }
 
         public boolean areContentsTheSame(DelegateItem.DiffBean newItem) {
-            return newItem!=null && Objects.equals(tag, newItem.tag);
+            return newItem != null && Objects.equals(tag, newItem.tag);
         }
 
         @Override

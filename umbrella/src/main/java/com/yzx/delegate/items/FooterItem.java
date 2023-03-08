@@ -35,12 +35,6 @@ public abstract class FooterItem extends DelegateItem<Void> {
     }
 
     @Override
-    public void setCount(int count) {
-        super.setCount(count);
-        getAdapter().submitList();
-    }
-
-    @Override
     protected Void getItem(int position) {
         return null;
     }

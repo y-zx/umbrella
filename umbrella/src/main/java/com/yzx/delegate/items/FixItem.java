@@ -35,10 +35,5 @@ public class FixItem extends DelegateItem<Void> {
         return null;
     }
 
-    @Override
-    public void setCount(int count) {
-        super.setCount(count);
-        getAdapter().submitList();
-    }
 
 }

@@ -107,7 +107,7 @@ public class RecyclerDelegateAdapter extends RecyclerView.Adapter<ViewHolder> {
     }
 
     public void submitList() {
-
+        notifyDataSetChanged();
     }
 
 }

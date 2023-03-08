@@ -23,15 +23,16 @@ public class MainActivity extends AppCompatActivity {
 
     String[] titles = {"a", "b", "c", "d", "e"};
 
+    String[] titles2 = {"y", "x", "z", "c", "e", "f", "g"};
+
     public <T extends View> T $(@IdRes int id) {
         return findViewById(id);
     }
 
     RecyclerDelegateAdapter adapter;
-    RecyclerDelegateDiffAdapter diffAdapter;
-
 
     public List<Object> mutiItemDataSource = new ArrayList<>();
+
     MainViewModel viewModel;
 
     @Override
@@ -51,16 +52,28 @@ public class MainActivity extends AppCompatActivity {
         };
         manager.setSpanSizeLookup(lookup);
         recyclerView.setLayoutManager(manager);
-        adapter = new RecyclerDelegateAdapter(this);
-        diffAdapter = new RecyclerDelegateDiffAdapter(this, getDiffBeanItemCallback());
+//        adapter = new RecyclerDelegateAdapter(this);
+        adapter = new RecyclerDelegateDiffAdapter(this);
         recyclerView.setAdapter(adapter);
 
         // 模拟 ViewModel 数据解析
         mutiItemDataSource.addAll(viewModel.getData());
 
+
+        final MainAdapter mainAdapter = new MainAdapter();
         // 初始化adapter与设置数据
-        MainAdapter.initMainAdapter(adapter, titles, mutiItemDataSource);
+        mainAdapter.initMainAdapter(adapter, titles, mutiItemDataSource);
+
+        findViewById(R.id.tv_btn).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                List<Object> mutiItemDataSource2 = new ArrayList<>();
+                mutiItemDataSource2.addAll(viewModel.getData2());
+                mainAdapter.setData(titles2, mutiItemDataSource);
+            }
+        });
     }
+
 
     @NonNull
     private DiffUtil.ItemCallback<DelegateItem.DiffBean> getDiffBeanItemCallback() {

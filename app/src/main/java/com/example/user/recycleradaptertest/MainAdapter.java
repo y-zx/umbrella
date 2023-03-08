@@ -23,10 +23,20 @@ import java.util.List;
  */
 public class MainAdapter {
 
-    public static void initMainAdapter(RecyclerDelegateAdapter adapter, String[] titles, List<Object> mutiItemDataSource) {
+    RecyclerDelegateAdapter adapter;
+    CommonItem<String> commonItem;
+    CommonMultipleItem<Object> commonMultipleItem;
 
+    public void setData(String[] titles, List<Object> mutiItemDataSource){
+        commonMultipleItem.setData(mutiItemDataSource);
+        commonItem.setData(Arrays.asList(titles));
+        adapter.submitList();
+    }
+
+    public void initMainAdapter(RecyclerDelegateAdapter adapter, String[] titles, List<Object> mutiItemDataSource) {
+        this.adapter = adapter;
         //item的个数 随数据源而定，布局为一种
-        CommonItem<String> commonItem = new CommonItem<String>(R.layout.cell_main_recycler_item2, 2) {
+        commonItem = new CommonItem<String>(R.layout.cell_main_recycler_item2, 2) {
             @Override
             protected void convert(ViewHolder holder, final int position, int positionAtTotal, String s) {
                 holder.setText(R.id.book_hot, String.format("最热榜榜%s", position + 1));
@@ -52,7 +62,7 @@ public class MainAdapter {
         commonItem.setData(Arrays.asList(titles));
 
         //item 的个数 随数据源而定，布局为多种
-        CommonMultipleItem<Object> commonMultipleItem = new CommonMultipleItem<>();
+        commonMultipleItem = new CommonMultipleItem<>();
         commonMultipleItem.registerMultipleChildItem(commonMultipleItem.new MultipleChildItem(R.layout.cell_my_layout, 1) {
             @Override
             protected boolean handleItem(Object object) {
@@ -193,6 +203,7 @@ public class MainAdapter {
                 // 加载更多
                 .registerItem(footerItem);
 
-        adapter.notifyDataSetChanged();
+//        adapter.notifyDataSetChanged();
+        adapter.submitList();
     }
 }

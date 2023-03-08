@@ -50,14 +50,12 @@ public abstract class CommonItem<T> extends DelegateItem<T> {
         if (data != null && data.size() > 0) {
             this.data.addAll(data);
         }
-        getAdapter().submitList();
     }
 
     public void addData(T data) {
         if (this.data != null && data != null) {
             this.data.add(data);
         }
-        getAdapter().submitList();
     }
 
     public List<T> getData() {
