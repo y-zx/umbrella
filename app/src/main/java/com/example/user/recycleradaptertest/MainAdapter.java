@@ -13,6 +13,7 @@ import com.yzx.delegate.items.FixItem;
 import com.yzx.delegate.items.FooterItem;
 
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -26,20 +27,32 @@ public class MainAdapter {
     RecyclerDelegateAdapter adapter;
     CommonItem<String> commonItem;
     CommonMultipleItem<Object> commonMultipleItem;
+    HashMap<Integer, String> layoutMap = new HashMap<>();
 
-    public void setData(String[] titles, List<Object> mutiItemDataSource){
+    public String getLayoutStringInfo(int layoutResId){
+        return layoutMap.get(layoutResId);
+    }
+
+    public void setData(List<String> titles, List<Object> mutiItemDataSource){
         commonMultipleItem.setData(mutiItemDataSource);
-        commonItem.setData(Arrays.asList(titles));
+        commonItem.setData(titles);
         adapter.submitList();
     }
 
     public void initMainAdapter(RecyclerDelegateAdapter adapter, String[] titles, List<Object> mutiItemDataSource) {
+        layoutMap.put(R.layout.cell_main_recycler_item2, "R.layout.cell_main_recycler_item2: CommonItem: 信息流");
+        layoutMap.put(R.layout.cell_my_layout, "R.layout.cell_my_layout: MultipleChildItem: 图+文+标签+2列");
+        layoutMap.put(R.layout.cell_my_layout5, "R.layout.cell_my_layout5: MultipleChildItem: 文+标签+2列");
+        layoutMap.put(R.layout.cell_my_layout4, "R.layout.cell_my_layout4: MultipleChildItem: 标题");
+        layoutMap.put(R.layout.cell_my_footer, "R.layout.cell_my_footer: Footer: 加载更多");
+        layoutMap.put(R.layout.cell_main_recycler_item, "R.layout.cell_main_recycler_item: Fix: banner");
         this.adapter = adapter;
         //item的个数 随数据源而定，布局为一种
         commonItem = new CommonItem<String>(R.layout.cell_main_recycler_item2, 2) {
             @Override
             protected void convert(ViewHolder holder, final int position, int positionAtTotal, String s) {
-                holder.setText(R.id.book_hot, String.format("最热榜榜%s", position + 1));
+                holder.setText(R.id.book_hot, String.format("最热榜榜%s", position + 1))
+                        .setText(R.id.tv_sub_recycler_item2, s);
                 holder.setOnViewTachStatusListener(new ViewHolder.OnViewTachStatusListener() {
                     @Override
                     public void onViewAttachedToWindow() {
