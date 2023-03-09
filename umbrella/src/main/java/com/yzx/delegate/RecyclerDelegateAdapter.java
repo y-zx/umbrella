@@ -106,5 +106,8 @@ public class RecyclerDelegateAdapter extends RecyclerView.Adapter<ViewHolder> {
         delegateManager.getDelegateArray().clear();
     }
 
+    public void submitList() {
+        notifyDataSetChanged();
+    }
 
 }

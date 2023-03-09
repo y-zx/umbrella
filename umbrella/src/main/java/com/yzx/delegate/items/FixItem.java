@@ -29,4 +29,10 @@ public class FixItem extends DelegateItem {
     public void convert(@NonNull ViewHolder holder, int position, int positionAtTotal) {
 
     }
+
+    @Override
+    protected <T> T getItem(int position) {
+        return null;
+    }
+
 }

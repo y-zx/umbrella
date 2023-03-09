@@ -85,14 +85,12 @@ public class CommonMultipleItem<T> extends DelegateItem {
     public SparseArray<MultipleChildItem> multipleChildren = new SparseArray<>();
 
     public <E extends MultipleChildItem> CommonMultipleItem<T> registerMultipleChildItem(E e) {
-
         e.adapter = getAdapter();
         multipleChildren.put(e.getLayoutResId(), e);
         return this;
     }
 
     public <E extends MultipleChildItem> CommonMultipleItem<T> unregisterMultipleChildItem(E e) {
-
         e.adapter = null;
         multipleChildren.remove(e.getLayoutResId());
         return this;
@@ -169,6 +167,11 @@ public class CommonMultipleItem<T> extends DelegateItem {
 
     public List<T> getData() {
         return data;
+    }
+
+    @Override
+    protected T getItem(int position) {
+        return getData().get(position);
     }
 
     @Override

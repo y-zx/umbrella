@@ -17,15 +17,42 @@ import java.util.List;
 public class MainViewModel {
 
     MainResonpse mainResonpse;
+    MainResonpse mainResonpse2;
 
     public MainViewModel() {
         mainResonpse = new Gson().fromJson(Constants.DATA1, MainResonpse.class);
+        mainResonpse2 = new Gson().fromJson(Constants.DATA2, MainResonpse.class);
     }
 
     public List<Object> getData() {
         List<Object> mutiItemDataSource = new ArrayList<>();
         if (mainResonpse.sections != null && mainResonpse.sections.size() > 0) {
             for (MainBean section : mainResonpse.sections) {
+                mutiItemDataSource.add(section.section_title);
+                if (section.books != null && section.books.size() > 0) {
+                    for (int i = 0; i < section.books.size(); i++) {
+                        MainBean.Book book = section.books.get(i);
+                        book.section_type = section.section_title.type;
+                        if (i % 2 == 0) {
+                            // 左边
+                            book.type = book.TYPE_LEFT;
+                        } else {
+                            // 右边
+                            book.type = book.TYPE_RIGHT;
+                        }
+                        book.lastOne = i == section.books.size() - 1;
+                        mutiItemDataSource.add(book);
+                    }
+                }
+            }
+        }
+        return mutiItemDataSource;
+    }
+
+    public List<Object> getData2() {
+        List<Object> mutiItemDataSource = new ArrayList<>();
+        if (mainResonpse2.sections != null && mainResonpse2.sections.size() > 0) {
+            for (MainBean section : mainResonpse2.sections) {
                 mutiItemDataSource.add(section.section_title);
                 if (section.books != null && section.books.size() > 0) {
                     for (int i = 0; i < section.books.size(); i++) {
