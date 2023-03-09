@@ -20,7 +20,7 @@ import java.util.List;
  * @E-mail: yzxandroid981@163.com
  */
 
-public class CommonMultipleItem<T> extends DelegateItem<T> {
+public class CommonMultipleItem<T> extends DelegateItem {
 
     public abstract class MultipleChildItem {
 

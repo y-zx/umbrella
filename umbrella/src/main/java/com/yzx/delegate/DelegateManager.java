@@ -116,7 +116,7 @@ public class DelegateManager {
 
     public long getItemId(int position) {
         for (Integer integer : getStatusHandleItems().keySet()) {
-            DelegateItem<?> item = getStatusHandleItems().get(integer);
+            DelegateItem item = getStatusHandleItems().get(integer);
             if (item.handleItem(position)) {
                 return item.getItemId(position);
             }

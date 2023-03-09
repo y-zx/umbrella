@@ -8,10 +8,10 @@ import androidx.annotation.NonNull;
 
 import com.yzx.delegate.RecyclerDelegateAdapter;
 import com.yzx.delegate.holder.ViewHolder;
+import com.yzx.delegate.utils.ObjectUtil;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 /**
  * @Author: yangzhenxiang
@@ -20,7 +20,7 @@ import java.util.Objects;
  * @E-mail: yzxandroid981@163.com
  */
 
-public abstract class DelegateItem<T> {
+public abstract class DelegateItem {
 
     protected String className;
     private RecyclerDelegateAdapter adapter;
@@ -186,7 +186,7 @@ public abstract class DelegateItem<T> {
         return getDataList();
     }
 
-    protected abstract T getItem(int position);
+    protected abstract <T> T getItem(int position);
 
     public static class DiffBean {
         public int layoutResId;
@@ -197,12 +197,12 @@ public abstract class DelegateItem<T> {
         }
 
         public boolean areContentsTheSame(DelegateItem.DiffBean newItem) {
-            return newItem != null && Objects.equals(tag, newItem.tag);
+            return newItem != null && ObjectUtil.equals(tag, newItem.tag);
         }
 
         @Override
         public int hashCode() {
-            return Objects.hash(layoutResId, tag);
+            return ObjectUtil.hash(layoutResId, tag);
         }
     }
 }

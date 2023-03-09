@@ -11,7 +11,7 @@ import com.yzx.delegate.holder.ViewHolder;
  * @E-mail: yzxandroid981@163.com
  */
 
-public abstract class FixItemT<T> extends DelegateItem<T> {
+public abstract class FixItemT<T> extends DelegateItem {
 
     private T t;
 

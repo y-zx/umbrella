@@ -14,7 +14,7 @@ import java.util.List;
  * @E-mail: yzxandroid981@163.com
  */
 
-public abstract class CommonItem<T> extends DelegateItem<T> {
+public abstract class CommonItem<T> extends DelegateItem {
 
     public List<T> data = new ArrayList<>();
 

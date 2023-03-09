@@ -11,7 +11,7 @@ import com.yzx.delegate.holder.ViewHolder;
  * @E-mail: yzxandroid981@163.com
  */
 
-public class FixItem extends DelegateItem<Void> {
+public class FixItem extends DelegateItem {
 
     public FixItem(int layoutResId) {
         this(layoutResId, 0);
@@ -31,9 +31,8 @@ public class FixItem extends DelegateItem<Void> {
     }
 
     @Override
-    public Void getItem(int position) {
+    protected <T> T getItem(int position) {
         return null;
     }
-
 
 }
