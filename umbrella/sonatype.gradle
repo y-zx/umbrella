@@ -12,10 +12,12 @@ uploadArchives {
     repositories {
         mavenDeployer {
             print "----uploadArchives"
+            def usrName = properties.getProperty("sonatype.userName")
+            def password = properties.getProperty("sonatype.pwd")
+            print "----uploadArchives userName:$usrName, password:$password"
             //本地maven
             repository(url: 'https://oss.sonatype.org/service/local/staging/deploy/maven2/') {
-                authentication(userName: properties.getProperty("sonatype.userName"),
-                        password: properties.getProperty("sonatype.pwd"))
+                authentication(userName: usrName, password: password)
                 pom.project {
                     groupId publishedGroupId
                     artifactId artifact

@@ -62,6 +62,10 @@ public abstract class CommonItem<T> extends DelegateItem {
         return data;
     }
 
+    @Override
+    protected T getItem(int position) {
+        return getData().get(position);
+    }
 
     @Override
     public void convert(@NonNull ViewHolder holder, int position, int positionAtTotal) {
@@ -69,4 +73,5 @@ public abstract class CommonItem<T> extends DelegateItem {
     }
 
     protected abstract void convert(@NonNull ViewHolder holder, int position, int positionAtTotal, T t);
+
 }

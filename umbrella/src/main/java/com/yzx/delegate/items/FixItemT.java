@@ -36,9 +36,16 @@ public abstract class FixItemT<T> extends DelegateItem {
     }
 
     @Override
+    protected T getItem(int position) {
+        return getData();
+    }
+
+
+    @Override
     public void convert(@NonNull ViewHolder holder, int position, int positionAtTotal) {
         convert(holder, position, positionAtTotal, t);
     }
 
     protected abstract void convert(@NonNull ViewHolder holder, int position, int positionAtTotal, T t);
+
 }
