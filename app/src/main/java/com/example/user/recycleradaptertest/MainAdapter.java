@@ -29,13 +29,14 @@ public class MainAdapter {
     CommonMultipleItem<Object> commonMultipleItem;
     HashMap<Integer, String> layoutMap = new HashMap<>();
 
-    public String getLayoutStringInfo(int layoutResId){
+    public String getLayoutStringInfo(int layoutResId) {
         return layoutMap.get(layoutResId);
     }
 
-    public void setData(List<String> titles, List<Object> mutiItemDataSource){
+    public void setData(List<String> titles, List<Object> mutiItemDataSource) {
         commonMultipleItem.setData(mutiItemDataSource);
         commonItem.setData(titles);
+        Log.d("DiffUU", "随机 数据总 长度" + (titles.size() + mutiItemDataSource.size()));
         adapter.submitList();
     }
 
